@@ -1,0 +1,106 @@
+text,label,language
+"URGENT: Example Bank says my account will close today unless I verify at http://example-bank-login.invalid now.",scam,English
+"Your Sample Credit Union account is frozen. Send your password and PIN in reply to restore access.",scam,English
+"Security team: suspicious activity detected. Open this shortened link and enter your one-time code to unlock your account.",scam,English
+"A transfer is pending. Call the number in this message and read your account code to cancel it.",scam,English
+"Final warning from Example Bank: pay a release fee to stop your account from being closed.",scam,English
+"Your account will be deleted in ten minutes. Sign in at http://example.invalid/secure and confirm your passcode.",scam,English
+"Su cuenta bancaria se bloqueará hoy. Envíe su contraseña y código de un solo uso para evitarlo.",scam,Spanish
+"आपका बैंक खाता बंद होने वाला है। इसे रोकने के लिए अपना पासवर्ड और ओटीपी अभी भेजें।",scam,Hindi
+"உங்கள் வங்கிக் கணக்கு முடக்கப்படும். அதைத் திறக்க உங்கள் ரகசிய குறியீட்டை இப்போது அனுப்புங்கள்.",scam,Tamil
+"Parcel notice: pay a small customs charge through http://parcel-fee.invalid to release your delivery.",scam,English
+"Your package is waiting. Install this tracking app from the attached file and pay the redelivery fee.",scam,English
+"We could not deliver your parcel. Reply with your card details to arrange another delivery.",scam,English
+"Courier alert: your address is incomplete. Use this shortened link and pay a new delivery charge.",scam,English
+"Your delivery is held at the depot. Send your bank details to receive it today.",scam,English
+"Tu paquete está retenido. Paga una tasa ahora en http://entrega-pago.invalid para recibirlo.",scam,Spanish
+"உங்கள் பார்சல் நிறுத்தப்பட்டுள்ளது. விடுவிக்க இந்த இணைப்பில் உடனே கட்டணம் செலுத்துங்கள்.",scam,Tamil
+"You won a prize in a draw you never entered. Pay the processing fee today to claim it.",scam,English
+"Congratulations! A mystery prize is yours. Send a gift card code to cover delivery.",scam,English
+"Your lottery ticket was selected. Pay tax by crypto before the prize can be released.",scam,English
+"You are the lucky winner. Keep this secret and send a small fee to claim your reward.",scam,English
+"आपने इनाम जीता है। इसे पाने के लिए पहले टैक्स की रकम भेजें और किसी को न बताएं।",scam,Hindi
+"Hi Mum, this is my new number. I need money right now. Please do not call the old number.",scam,English
+"Hello Dad, I lost my phone. Transfer money to this new account and keep it secret.",scam,English
+"I am in trouble and cannot talk. Send a gift card code now; I will explain later.",scam,English
+"Your grandson here. I was in an accident. Pay this urgent fee before the hospital calls.",scam,English
+"அம்மா, நான் புதிய எண்ணைப் பயன்படுத்துகிறேன். உடனே பணம் அனுப்பு; யாரிடமும் சொல்லாதே.",scam,Tamil
+"पापा, मेरा फोन खो गया है। अभी इस नए खाते में पैसे भेजें और किसी को न बताएं।",scam,Hindi
+"This is computer support. Your device is infected. Install this remote access tool and leave it open.",scam,English
+"A technician found a virus on your computer. Call the number in this pop-up and pay for a cleanup.",scam,English
+"Your cloud account is compromised. Download this attachment so our support agent can repair it.",scam,English
+"Soporte técnico: su ordenador está infectado. Instale esta aplicación de control remoto ahora.",scam,Spanish
+"Security help desk: read me the code you just received so I can remove the virus.",scam,English
+"Invest $200 today and receive a guaranteed tenfold return tomorrow. Send crypto to this wallet.",scam,English
+"Our private investment group has a risk-free offer, but you must transfer funds before midnight.",scam,English
+"Double your savings in one week. Borrow money if needed; this opportunity is guaranteed.",scam,English
+"இந்த முதலீட்டில் எந்த ஆபத்தும் இல்லை. இன்று பணம் அனுப்பினால் மூன்று மடங்கு லாபம் உறுதி.",scam,Tamil
+"निश्चित मुनाफ़ा पाने के लिए अभी क्रिप्टो भेजें। यह मौका केवल आज तक है।",scam,Hindi
+"My online partner needs travel money but cannot video call. Please lend them money secretly.",scam,English
+"We have never met, but I love you. Send money for my emergency and do not tell your family.",scam,English
+"I am working overseas and my parcel is trapped. Pay the fee and I will repay you when we marry.",scam,English
+"Mi amor, necesito dinero urgente. Envíalo en tarjetas regalo y no se lo cuentes a nadie.",scam,Spanish
+"A person I met in a chat promised a future together and now asks for crypto to pay a medical bill.",scam,English
+"Brand-new shop: luxury items at 95% off. Pay only by bank transfer at http://deals.invalid.",scam,English
+"This online store accepts gift cards only. Send the code by chat to confirm your order.",scam,English
+"A seller says I must pay outside the shopping site to keep a very cheap offer.",scam,English
+"Limited-time bargain! Download this unknown shopping app and enter your card PIN for a discount.",scam,English
+"सस्ता सामान पाने के लिए इस नई दुकान पर बैंक से सीधे पैसे भेजें।",scam,Hindi
+"இந்த புதிய கடையில் வங்கி பரிமாற்றம் மட்டும் ஏற்கப்படும்; இப்போது பணம் அனுப்புங்கள்.",scam,Tamil
+"A caller says they are support and need my one-time login code to protect my account.",scam,English
+"Your verification code is needed to cancel a payment. Read it aloud to the caller now.",scam,English
+"Reply with the six-digit code from your phone so we can confirm your identity.",scam,English
+"No compartas tu clave con nadie: ahora envíamela para confirmar que eres el titular.",scam,Spanish
+"உங்கள் ஒரு முறை குறியீட்டை என்னிடம் சொல்லுங்கள்; உங்கள் கணக்கைப் பாதுகாக்க வேண்டும்.",scam,Tamil
+"आपका खाता सुरक्षित करने के लिए अभी आया हुआ ओटीपी मुझे बताइए।",scam,Hindi
+"Example Bank notice: your one-time code is for sign-in. Do not share it with anyone.",safe,English
+"Your sample account sign-in code was requested. If this was not you, open the bank app yourself.",safe,English
+"Security reminder: staff will never ask for your password or one-time code.",safe,English
+"Monthly statement is ready in the banking app. No action is needed today.",safe,English
+"A card payment was declined. Check the transaction in your usual banking app.",safe,English
+"Tu código de acceso es temporal. No lo compartas con nadie, ni siquiera con soporte.",safe,Spanish
+"आपका ओटीपी केवल आपके लॉगिन के लिए है। इसे किसी के साथ साझा न करें।",safe,Hindi
+"உங்கள் உள்நுழைவு குறியீட்டை யாரிடமும் பகிர வேண்டாம். இந்தச் செய்திக்கு பதில் தேவையில்லை.",safe,Tamil
+"The monthly bill is due next week. I will pay it in my normal utility app.",safe,English
+"Your electricity statement is available. You can review it in the app you already use.",safe,English
+"We received your payment. A receipt is available in your account; no reply is needed.",safe,English
+"A scheduled payment completed today. Review it in your bank app if you do not recognize it.",safe,English
+"Your parcel is on the way. Track it in the delivery app you used to place the order.",safe,English
+"Your order has shipped. The store app has the latest delivery estimate.",safe,English
+"Delivery reminder: your package will be left at the agreed safe place.",safe,English
+"Tu pedido salió hoy. Consulta el seguimiento desde la aplicación oficial de la tienda.",safe,Spanish
+"பார்சல் அனுப்பப்பட்டுள்ளது. நீங்கள் பயன்படுத்திய கடை செயலியில் நிலையைப் பாருங்கள்.",safe,Tamil
+"Your community raffle results are posted at the library. Entry was free and no payment is required.",safe,English
+"The school art contest winners will be announced next Friday. There is no fee to enter.",safe,English
+"I entered a free neighborhood draw. The organizer says winners collect prizes in person.",safe,English
+"The public museum is offering a free book giveaway at its front desk this weekend.",safe,English
+"पुस्तकालय की निःशुल्क प्रतियोगिता के नतीजे सूचना-पट्ट पर लगाए जाएंगे।",safe,Hindi
+"Hi Mum, I will be home after work. Please save me some dinner.",safe,English
+"Dad, I am on my usual way home. See you soon.",safe,English
+"Can you pick up bread when you have time? No rush.",safe,English
+"அம்மா, நான் மாலை வீட்டிற்கு வருகிறேன். உணவு வைத்திருங்கள்.",safe,Tamil
+"पापा, मैं शाम को घर आऊँगा। रास्ते में कुछ लेने की ज़रूरत नहीं है।",safe,Hindi
+"Your computer update is ready in system settings. Install it when convenient.",safe,English
+"The support page says to restart the router using its power button. No remote access is needed.",safe,English
+"A reminder says the device warranty ends next month. I will check it through the settings app.",safe,English
+"La actualización del teléfono está disponible en Ajustes. Puedes instalarla cuando quieras.",safe,Spanish
+"A financial class explains that investments can lose value and suggests comparing fees.",safe,English
+"My savings account pays variable interest. I will read the terms before deciding what to do.",safe,English
+"A public investor guide says past returns do not guarantee future results.",safe,English
+"म्यूचुअल फंड का मूल्य घट भी सकता है। पहले दस्तावेज़ पढ़ें और जोखिम समझें।",safe,Hindi
+"I enjoyed our chat today. Would you like to talk again this weekend?",safe,English
+"It was nice meeting you at the community event. Have a good evening.",safe,English
+"The shop sent an order confirmation. I can check the receipt in my account.",safe,English
+"My usual grocery store lists today's opening hours on its public website.",safe,English
+"The bookstore says my reserved book is ready for pickup. No payment is requested.",safe,English
+"A shop refunded my order to the original payment method. The receipt is in my account.",safe,English
+"La tienda confirmó el pedido y muestra el recibo dentro de mi cuenta habitual.",safe,Spanish
+"My dentist appointment is tomorrow at 3 PM. Reply YES to confirm.",safe,English
+"Your clinic appointment is next Tuesday. Call the number on your appointment card if you need to change it.",safe,English
+"The school meeting begins at 5 PM in the usual classroom.",safe,English
+"Your library books are due this weekend. You can renew them in the library app.",safe,English
+"The bus timetable changed for the holiday. Check the public transit website before leaving.",safe,English
+"A weather alert says rain is expected this afternoon. Bring an umbrella if you go out.",safe,English
+"La cita de la biblioteca es el jueves. Puedes cancelarla desde la aplicación que ya usas.",safe,Spanish
+"நாளை மாலை உங்கள் வழக்கமான மருத்துவர் சந்திப்பு உள்ளது. மாற்றம் தேவையில்லை.",safe,Tamil
+"आपकी दंत चिकित्सक की मुलाक़ात कल दोपहर है। समय बदलना हो तो क्लिनिक के आधिकारिक ऐप का उपयोग करें।",safe,Hindi

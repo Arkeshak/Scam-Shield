@@ -1,0 +1,15 @@
+{
+  "total_images": 25,
+  "scam_images": 22,
+  "safe_images": 3,
+  "total_expected_boxes": 22,
+  "boxes_hit": 16,
+  "boxes_missed": 6,
+  "box_hit_rate": 0.727,
+  "iou_threshold": 0.3,
+  "false_boxes_on_safe": 0,
+  "sam_improved_on_rough_box_count": 16,
+  "sam_improved_rate": 0.727,
+  "synthetic": true,
+  "note": "Measured on synthetic and procedural UI screenshots. Harder cases include dark-mode SMS, cropped email, QR-code pretexts, and safe control receipts."
+}

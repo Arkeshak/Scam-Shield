@@ -1,0 +1,381 @@
+{
+  "screen_00.png": {
+    "index": 0,
+    "filename": "screen_00.png",
+    "expected_boxes": [
+      [
+        0.056,
+        0.489,
+        0.369,
+        0.649
+      ]
+    ],
+    "concept": "button",
+    "is_safe": false,
+    "type": "synthetic_standard",
+    "synthetic": true
+  },
+  "screen_01.png": {
+    "index": 1,
+    "filename": "screen_01.png",
+    "expected_boxes": [
+      [
+        0.115,
+        0.531,
+        0.427,
+        0.691
+      ]
+    ],
+    "concept": "button",
+    "is_safe": false,
+    "type": "synthetic_standard",
+    "synthetic": true
+  },
+  "screen_02.png": {
+    "index": 2,
+    "filename": "screen_02.png",
+    "expected_boxes": [
+      [
+        0.174,
+        0.573,
+        0.486,
+        0.733
+      ]
+    ],
+    "concept": "button",
+    "is_safe": false,
+    "type": "synthetic_standard",
+    "synthetic": true
+  },
+  "screen_03.png": {
+    "index": 3,
+    "filename": "screen_03.png",
+    "expected_boxes": [
+      [
+        0.233,
+        0.616,
+        0.545,
+        0.776
+      ]
+    ],
+    "concept": "button",
+    "is_safe": false,
+    "type": "synthetic_standard",
+    "synthetic": true
+  },
+  "screen_04.png": {
+    "index": 4,
+    "filename": "screen_04.png",
+    "expected_boxes": [
+      [
+        0.291,
+        0.658,
+        0.604,
+        0.818
+      ]
+    ],
+    "concept": "button",
+    "is_safe": false,
+    "type": "synthetic_standard",
+    "synthetic": true
+  },
+  "screen_05.png": {
+    "index": 5,
+    "filename": "screen_05.png",
+    "expected_boxes": [
+      [
+        0.35,
+        0.5,
+        0.662,
+        0.66
+      ]
+    ],
+    "concept": "button",
+    "is_safe": false,
+    "type": "synthetic_standard",
+    "synthetic": true
+  },
+  "screen_06.png": {
+    "index": 6,
+    "filename": "screen_06.png",
+    "expected_boxes": [
+      [
+        0.409,
+        0.542,
+        0.721,
+        0.702
+      ]
+    ],
+    "concept": "button",
+    "is_safe": false,
+    "type": "synthetic_standard",
+    "synthetic": true
+  },
+  "screen_07.png": {
+    "index": 7,
+    "filename": "screen_07.png",
+    "expected_boxes": [
+      [
+        0.468,
+        0.584,
+        0.78,
+        0.744
+      ]
+    ],
+    "concept": "button",
+    "is_safe": false,
+    "type": "synthetic_standard",
+    "synthetic": true
+  },
+  "screen_08.png": {
+    "index": 8,
+    "filename": "screen_08.png",
+    "expected_boxes": [
+      [
+        0.526,
+        0.627,
+        0.839,
+        0.787
+      ]
+    ],
+    "concept": "button",
+    "is_safe": false,
+    "type": "synthetic_standard",
+    "synthetic": true
+  },
+  "screen_09.png": {
+    "index": 9,
+    "filename": "screen_09.png",
+    "expected_boxes": [
+      [
+        0.585,
+        0.669,
+        0.897,
+        0.829
+      ]
+    ],
+    "concept": "button",
+    "is_safe": false,
+    "type": "synthetic_standard",
+    "synthetic": true
+  },
+  "screen_10.png": {
+    "index": 10,
+    "filename": "screen_10.png",
+    "expected_boxes": [
+      [
+        0.094,
+        0.511,
+        0.406,
+        0.671
+      ]
+    ],
+    "concept": "button",
+    "is_safe": false,
+    "type": "synthetic_standard",
+    "synthetic": true
+  },
+  "screen_11.png": {
+    "index": 11,
+    "filename": "screen_11.png",
+    "expected_boxes": [
+      [
+        0.152,
+        0.553,
+        0.465,
+        0.713
+      ]
+    ],
+    "concept": "button",
+    "is_safe": false,
+    "type": "synthetic_standard",
+    "synthetic": true
+  },
+  "screen_12.png": {
+    "index": 12,
+    "filename": "screen_12.png",
+    "expected_boxes": [
+      [
+        0.211,
+        0.596,
+        0.524,
+        0.756
+      ]
+    ],
+    "concept": "button",
+    "is_safe": false,
+    "type": "synthetic_standard",
+    "synthetic": true
+  },
+  "screen_13.png": {
+    "index": 13,
+    "filename": "screen_13.png",
+    "expected_boxes": [
+      [
+        0.27,
+        0.638,
+        0.583,
+        0.798
+      ]
+    ],
+    "concept": "button",
+    "is_safe": false,
+    "type": "synthetic_standard",
+    "synthetic": true
+  },
+  "screen_14.png": {
+    "index": 14,
+    "filename": "screen_14.png",
+    "expected_boxes": [
+      [
+        0.329,
+        0.68,
+        0.641,
+        0.84
+      ]
+    ],
+    "concept": "button",
+    "is_safe": false,
+    "type": "synthetic_standard",
+    "synthetic": true
+  },
+  "screen_15.png": {
+    "index": 15,
+    "filename": "screen_15.png",
+    "expected_boxes": [
+      [
+        0.075,
+        0.378,
+        0.45,
+        0.478
+      ]
+    ],
+    "concept": "link",
+    "is_safe": false,
+    "type": "dark_mode_sms",
+    "synthetic": true
+  },
+  "screen_16.png": {
+    "index": 16,
+    "filename": "screen_16.png",
+    "expected_boxes": [
+      [
+        0.05,
+        0.4,
+        0.425,
+        0.533
+      ]
+    ],
+    "concept": "button",
+    "is_safe": false,
+    "type": "cropped_email",
+    "synthetic": true
+  },
+  "screen_17.png": {
+    "index": 17,
+    "filename": "screen_17.png",
+    "expected_boxes": [
+      [
+        0.05,
+        0.289,
+        0.312,
+        0.756
+      ]
+    ],
+    "concept": "qr code",
+    "is_safe": false,
+    "type": "qr_page",
+    "synthetic": true
+  },
+  "screen_18.png": {
+    "index": 18,
+    "filename": "screen_18.png",
+    "expected_boxes": [
+      [
+        0.05,
+        0.422,
+        0.4,
+        0.567
+      ]
+    ],
+    "concept": "button",
+    "is_safe": false,
+    "type": "tamil_scam",
+    "synthetic": true
+  },
+  "screen_19.png": {
+    "index": 19,
+    "filename": "screen_19.png",
+    "expected_boxes": [
+      [
+        0.05,
+        0.422,
+        0.412,
+        0.567
+      ]
+    ],
+    "concept": "button",
+    "is_safe": false,
+    "type": "hindi_scam",
+    "synthetic": true
+  },
+  "screen_20.png": {
+    "index": 20,
+    "filename": "screen_20.png",
+    "expected_boxes": [
+      [
+        0.225,
+        0.578,
+        0.6,
+        0.733
+      ]
+    ],
+    "concept": "button",
+    "is_safe": false,
+    "type": "bank_dialog_scam",
+    "synthetic": true
+  },
+  "screen_21.png": {
+    "index": 21,
+    "filename": "screen_21.png",
+    "expected_boxes": [
+      [
+        0.15,
+        0.533,
+        0.525,
+        0.689
+      ]
+    ],
+    "concept": "button",
+    "is_safe": false,
+    "type": "fake_update",
+    "synthetic": true
+  },
+  "screen_22.png": {
+    "index": 22,
+    "filename": "screen_22.png",
+    "expected_boxes": [],
+    "concept": "none",
+    "is_safe": true,
+    "type": "safe_receipt",
+    "synthetic": true
+  },
+  "screen_23.png": {
+    "index": 23,
+    "filename": "screen_23.png",
+    "expected_boxes": [],
+    "concept": "none",
+    "is_safe": true,
+    "type": "safe_school",
+    "synthetic": true
+  },
+  "screen_24.png": {
+    "index": 24,
+    "filename": "screen_24.png",
+    "expected_boxes": [],
+    "concept": "none",
+    "is_safe": true,
+    "type": "safe_delivery",
+    "synthetic": true
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "label": "unseen",
+  "n": 50,
+  "accuracy": 1.0,
+  "false_alarms": 0,
+  "missed_scams": 0,
+  "worst_cases": [],
+  "synthetic": true
+}

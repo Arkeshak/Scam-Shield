@@ -1,0 +1,51 @@
+text,label,category,language
+"Hello, this is officer Watson from federal tax enforcement. A warrant has been drawn against your identity number. You must call back immediately to settle this before arrest.",scam,government_impersonation,English
+"Good afternoon, I hope you are having a pleasant day. Our audit team noted an overpayment discrepancy of . Please share your account number and routing code so we can credit it.",scam,polite_bank_scam,English
+"Hi Anna, are we still meeting for brunch this Sunday? Oh sorry, I typed the wrong number. You seem very pleasant though, where are you from?",scam,wrong_number,English
+"Invoice #94821: Thank you for renewing your UltraShield Security subscription for .00. If you did not make this purchase, call our fraud desk immediately at 1-800-555-0199.",scam,fake_invoice,English
+"Hi Uncle, I am in a conference session and my card is declining. Could you pick up three  Steam gift cards for the presentation prizes? I will repay you cash tonight.",scam,gift_card,English
+Your mailbox storage has exceeded 99%. Incoming messages are currently on hold. Please scan the QR code attached to verify your mailbox credentials.,scam,qr_pretext,English
+"Hi dearest, I am so glad we connected on the forum. Life here on the international cargo ship is lonely. Can you receive a confidential package for me at your address?",scam,romance,English
+Part-time opportunity: Earn - daily by rating hotels on Google Maps. No experience needed. Contact our telegram recruiter @HotelRatingTasks to start.,scam,job_scam,English
+ATTENTION: Your vehicle toll payment of .15 is unpaid. A late penalty fee of  will apply at midnight. Resolve at toll-fastpass-pay.example.com.,scam,fake_toll,English
+Express courier: We attempted delivery of your parcel today but no one was home. Update your delivery address and pay the .50 redelivery fee at express-parcel-redelivery.example.org.,scam,delivery_phish,English
+Crypto alert: 1.25 BTC has been reserved under your wallet handle. Deposit 0.05 BTC clearance deposit to release the cold storage withdrawal.,scam,crypto_advance,English
+Your online banking session has been restricted due to an unusual login from another state. Authenticate your identity immediately at secure-verify-banking.example.net.,scam,bank_phish,English
+"Hey Dad, my phone broke and I am borrowing my friend phone. Can you send  for rent to their Zelle right now? It is urgent, I will explain later.",scam,family_emergency,English
+"Congratulations! You have been selected as the third prize winner in our autumn shopping sweepstakes. Wire  handling charge to claim your ,000 gift voucher.",scam,lottery,English
+HR Department: Important employee benefits tax document update for 2026. Review and sign the attached digital document using your company SSO credentials.,scam,credential_harvest,English
+Utility warning: Power disconnection scheduled in 45 minutes due to overdue electric bill. Call our dispatch payment hotline now to avoid outage.,scam,utility_urgency,English
+"Hello, I accidentally sent a two-factor verification code to your mobile number. Could you kindly read that 6-digit number back to me?",scam,otp_stealing,English
+Your cloud storage subscription expired. All stored family photos and documents will be permanently erased within 24 hours unless you renew at cloud-storage-renew.example.cc.,scam,extortion_urgency,English
+Your ExampleBank one-time security code is 492018 for a purchase of .50 at Corner Cafe. Do not share this code with anyone.,safe,bank_otp,English
+MetroCourier: Package #EX-84920 has been delivered to your front porch. View delivery photo in your official MetroCourier mobile app.,safe,parcel_delivery,English
+Reminder: You have a dental cleaning scheduled tomorrow at 10:30 AM with Dr. Apex Dental Clinic. Reply C to confirm or call clinic reception at 555-0144.,safe,appointment,English
+"Hey sweetheart, I left my car keys on the kitchen counter and am running late. Could you put them in the hallway drawer? Thanks Mum.",safe,family_normal,English
+City Water Authority: Your monthly statement for October is ready. Balance due .20 on Nov 12. View details on your online portal at citywater-portal.example.gov.,safe,utility_bill,English
+"739104 is your SecureMail verification code. It expires in 5 minutes. If you did not request this, please change your password in account settings.",safe,2fa_code,English
+Greenwood Academy notice: School buses will run 15 minutes late this afternoon due to rainfall on Maple Ave. All students remain safely supervised indoors.,safe,school_notice,English
+Your pharmacy prescription #9481 is ready for pickup at Oak Street Pharmacy. Drive-thru is open until 8 PM tonight.,safe,pharmacy,English
+"Library reminder: 2 books checked out to your card are due back on Thursday, Nov 5. Renew online through the county library catalog system.",safe,library,English
+Veterinary Clinic: Bella is due for her annual rabies vaccination this month. Call our desk at 555-0182 to book an afternoon slot.,safe,appointment,English
+"Dad, can you pick up some semi-skimmed milk and brown bread on your way home from the grocery store? Thanks!",safe,family_normal,English
+Flight confirmation: Your check-in for flight QA-304 to Chicago is now open. Open the AirlineGo mobile app to download your boarding pass.,safe,travel,English
+Community alert: Street sweeping on Elm Street scheduled for Wednesday 8 AM to 12 PM. Please park vehicles on odd-numbered sides.,safe,community_notice,English
+Hair Salon: Your haircut appointment with Sarah is confirmed for Saturday at 2:00 PM. Reply 1 to confirm or 2 to reschedule.,safe,appointment,English
+"Your weekly fitness summary: You completed 4 workouts and reached 38,000 steps this week. Keep up the great pace!",safe,app_notification,English
+Dinner tonight is at 7:30 PM at the Italian place downtown. Grandpa is already on his way with Uncle David.,safe,family_normal,English
+HVAC maintenance check: Technician Dave will arrive between 1 PM and 3 PM tomorrow. Please ensure adult presence at the premises.,safe,service_appointment,English
+Your order from Green Garden Nursery has shipped via Regional Freight. Tracking number #RG-90218. Estimated delivery in 2 business days.,safe,parcel_delivery,English
+"வணக்கம் அத்தை, என் போன் உடைந்துவிட்டது. அவசர மருத்துவ சிகிச்சைக்காக ரூ. 10,000 உடனடியாக இந்த கூகுள் பே எண்ணுக்கு அனுப்ப முடியுமா? மாலையில் தருகிறேன்.",scam,family_emergency,Tamil
+உங்கள் வங்கி கணக்கு இன்றுடன் தற்காலிகமாக முடக்கப்படும். உடனே புதுப்பிக்க உங்கள் ஆதார் எண் மற்றும் ஏடிஎம் பின்னை இந்த வாட்ஸ்அப் எண்ணிற்கு அனுப்பவும்.,scam,bank_kyc,Tamil
+"உங்கள் மின்சாரக் கட்டணம் ரூ. 1,450 செலுத்த வேண்டிய கடைசி நாள் நவம்பர் 10. அதிகாரப்பூர்வ மின்சார வாரிய அலுவலகம் அல்லது செயலி மூலம் செலுத்தலாம்.",safe,utility_bill,Tamil
+நாளை காலை 9:30 மணிக்கு உங்கள் கண் மருத்துவ பரிசோதனை உள்ளது. தயவுசெய்து 15 நிமிடங்களுக்கு முன் மருத்துவமனை கவுண்டரில் பதிவு செய்யவும்.,safe,appointment,Tamil
+"नमस्ते, गलती से आपके मोबाइल पर एक पार्सल डिलीवरी ओटीपी चला गया है। कृपया वह 6 अंकों का कोड मुझे बता दीजिए ताकि मैं पार्सल छोड़ सकूं।",scam,otp_stealing,Hindi
+"बधाई हो! आपकी लॉटरी में 25 लाख रुपये निकले हैं। पुरस्कार राशि अपने खाते में पाने के लिए 1,500 रुपये पंजीकरण शुल्क तुरंत ट्रांसफर करें।",scam,lottery,Hindi
+"प्रिय ग्राहक, आपके खाता संख्या XXXX4819 में 5,000 रुपये जमा किए गए हैं। कुल शेष राशि जानने के लिए आधिकारिक बैंक ऐप का उपयोग करें।",safe,bank_deposit,Hindi
+"नमस्ते चाचीजी, कल शाम को हम सब घर आ रहे हैं। क्या आप डिनर के लिए घर पर होंगी? हम मिठाई लेकर आएंगे।",safe,family_normal,Hindi
+"Hola mamá, perdí mi teléfono móvil y este es mi número provisional. Necesito pagar una factura urgente hoy mismo, ¿me puedes transferir 200 euros a esta cuenta por favor?",scam,family_emergency,Spanish
+Aviso de aduanas: Su paquete no pudo ser entregado por falta de pago arancelario. Ingrese a aduanas-pago-urgente.example.xyz para abonar 2.50 euros.,scam,delivery_phish,Spanish
+Recordatorio: Su consulta con el Dr. Morales está programada para el jueves a las 15:00 en la Clínica Central. Por favor llegue 10 minutos antes.,safe,appointment,Spanish
+Su código de verificación para acceder a CorreoSeguro es 829104. Válido por 10 minutos. Nunca comparta este código con nadie.,safe,2fa_code,Spanish
+مرحباً يا أمي، لقد تعطل هاتفي وهذا رقمي المؤقت الجديد. أنا بحاجة ماسة لدفع فاتورة المستشفى الآن، هل يمكنك تحويل 150 دولاراً عبر الرابط التالي؟,scam,family_emergency,Arabic
+رمز التحقق الخاص بك لتسجيل الدخول إلى حسابك هو 592810. صالح لمدة خمس دقائق. لا تشارك هذا الرمز مع أي شخص.,safe,2fa_code,Arabic

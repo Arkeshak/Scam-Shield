@@ -1,0 +1,26 @@
+{
+  "n": 105,
+  "total_cases": 105,
+  "accuracy": 1.0,
+  "coverage": 1.0,
+  "false_alarms": 0,
+  "missed_scams": 0,
+  "failed_cases": [],
+  "worst_cases": [],
+  "evaluated_at": "2026-10-27T06:11:55.933327+00:00",
+  "screenshot_evaluation": {
+    "total_images": 25,
+    "scam_images": 22,
+    "safe_images": 3,
+    "total_expected_boxes": 22,
+    "boxes_hit": 16,
+    "boxes_missed": 6,
+    "box_hit_rate": 0.727,
+    "iou_threshold": 0.3,
+    "false_boxes_on_safe": 0,
+    "sam_improved_on_rough_box_count": 16,
+    "sam_improved_rate": 0.727,
+    "synthetic": true,
+    "note": "Measured on synthetic and procedural UI screenshots. Harder cases include dark-mode SMS, cropped email, QR-code pretexts, and safe control receipts."
+  }
+}
