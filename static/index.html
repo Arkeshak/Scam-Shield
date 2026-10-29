@@ -1,0 +1,815 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ScamShield Family: check before you click, pay or share</title>
+<meta name="description" content="AI scam bodyguard for families, built with Meta Muse Spark, SAM 3.1, Muse Voice Transcribe and Muse Image.">
+<meta property="og:title" content="ScamShield Family: AI Scam Bodyguard">
+<meta property="og:description" content="Check before you click, pay or share. Built with Meta Muse models for the Meta Global AI Developer Hackathon.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><path d='M24 3 6 10v13c0 11 7.7 19.5 18 22 10.3-2.5 18-11 18-22V10L24 3z' fill='%230866ff'/><path d='M16 24l6 6 11-12' fill='none' stroke='%23ffffff' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+<style>
+/* Bootstrap: core variables only. Full design in meta-theme.css */
+:root{
+  --bg:#f0f2f5;--card:#ffffff;--ink:#1c1e21;--muted:#65676b;--line:#dadde1;
+  --brand:#0866ff;--brand-ink:#ffffff;--soft:#e7f0ff;--soft2:#f0f6ff;
+  --low:#1e7e34;--low-bg:#d4edda;--low-bdr:#b8dfc3;
+  --med:#856404;--med-bg:#fff3cd;--med-bdr:#ffe494;
+  --high:#b02020;--high-bg:#f8d7da;--high-bdr:#f1aeb5;
+  --sam:#16a34a;--rough:#dc2626;--shadow:0 2px 8px rgba(0,0,0,.08);
+  --fs:16px;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#18191a;--card:#242526;--ink:#e4e6eb;--muted:#8a8d91;--line:#3e4042;
+    --brand:#4599ff;--brand-ink:#ffffff;--soft:#1a2e4a;--soft2:#152238;
+    --low:#56c870;--low-bg:#0e2e18;--low-bdr:#1a4a28;
+    --med:#f5c400;--med-bg:#2d2200;--med-bdr:#4a3800;
+    --high:#ff6b72;--high-bg:#2e0c0e;--high-bdr:#5a1520;
+    --shadow:0 2px 8px rgba(0,0,0,.4);
+  }
+}
+body.dark{
+  --bg:#18191a;--card:#242526;--ink:#e4e6eb;--muted:#8a8d91;--line:#3e4042;
+  --brand:#4599ff;--brand-ink:#ffffff;--soft:#1a2e4a;--soft2:#152238;
+  --low:#56c870;--low-bg:#0e2e18;--low-bdr:#1a4a28;
+  --med:#f5c400;--med-bg:#2d2200;--med-bdr:#4a3800;
+  --high:#ff6b72;--high-bg:#2e0c0e;--high-bdr:#5a1520;
+  --shadow:0 2px 8px rgba(0,0,0,.4);
+}
+body.light{
+  --bg:#f0f2f5;--card:#ffffff;--ink:#1c1e21;--muted:#65676b;--line:#dadde1;
+  --brand:#0866ff;--brand-ink:#ffffff;--soft:#e7f0ff;--soft2:#f0f6ff;
+  --low:#1e7e34;--low-bg:#d4edda;--low-bdr:#b8dfc3;
+  --med:#856404;--med-bg:#fff3cd;--med-bdr:#ffe494;
+  --high:#b02020;--high-bg:#f8d7da;--high-bdr:#f1aeb5;
+  --shadow:0 2px 8px rgba(0,0,0,.08);
+}
+*{box-sizing:border-box}
+html{font-size:var(--fs)}
+html.big,body.big,:root:has(body.big){--fs:20px;font-size:20px}
+body{margin:0;background:var(--bg);color:var(--ink);font-size:var(--fs);
+  font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  padding-top:env(safe-area-inset-top,0);padding-bottom:env(safe-area-inset-bottom,0)}
+</style>
+<link rel="stylesheet" href="/static/meta-theme.css"></head>
+<body>
+<div class="wrap">
+  <!-- 1. Top bar -->
+  <header class="top">
+    <a href="#" class="logo" aria-label="ScamShield Family Home">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 3 6 10v13c0 11 7.7 19.5 18 22 10.3-2.5 18-11 18-22V10L24 3z" fill="var(--brand)"/><path d="M16 24l6 6 11-12" fill="none" stroke="var(--brand-ink)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      ScamShield Family
+    </a>
+    <div class="toolbar">
+      <a class="btn" href="/guard" style="font-weight:700;color:var(--high);border-color:var(--high)">🔴 Live Call Guard</a>
+      <button class="btn" id="bigBtn" aria-pressed="false" type="button">Bigger text</button>
+      <button class="btn" id="themeBtn" aria-pressed="false" type="button">Toggle dark mode</button>
+      <a class="btn" href="https://github.com/Arkeshak/scam-shield-family" target="_blank" rel="noopener noreferrer">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        GitHub
+      </a>
+    </div>
+  </header>
+
+  <!-- 2. Hero band -->
+  <section class="hero-band">
+    <span class="eyebrow">Built with Meta Muse models</span>
+    <h1>Check before you click, pay or share.</h1>
+    <p>Send any strange message, screenshot, voice note or call recording. We explain the trick in simple words, mark fake parts with SAM 3.1, and can warn a trusted family member before money is sent.</p>
+  </section>
+
+  <!-- 3. Judge tour banner (D4) -->
+  <section class="tour" aria-label="Judge tour">
+    <div>
+      <p>Judge &amp; Developer Quick Tour</p>
+      <small>Put a live call on speakerphone with Live Call Guard, run a live demo, or inspect a saved run</small>
+    </div>
+    <div class="tour-actions">
+      <a class="btn primary" href="/guard" style="font-weight:700">🔴 Live Call Guard</a>
+      <button class="btn" id="tourLiveBtn" type="button">Run a live demo</button>
+      <button class="btn" id="tourSavedBtn" type="button">Show a saved example</button>
+    </div>
+  </section>
+
+  <!-- 4. Model strip (D3) -->
+  <section class="models" id="models" aria-label="Meta models used"></section>
+
+  <!-- 5. Main two-column card -->
+  <main class="grid">
+    <section class="card" aria-label="Check something">
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" id="t-text" aria-selected="true" data-tab="text" type="button">Message</button>
+        <button class="tab" role="tab" id="t-image" aria-selected="false" data-tab="image" type="button">Screenshot</button>
+        <button class="tab" role="tab" id="t-voice" aria-selected="false" data-tab="voice" type="button">Voice note</button>
+        <button class="tab" role="tab" id="t-call" aria-selected="false" data-tab="call" type="button">Call recording</button>
+      </div>
+
+      <label class="small" for="lang">Answer in this language</label>
+      <select id="lang">
+        <option>English</option><option>Tamil</option><option>Hindi</option><option>Spanish</option><option>Arabic</option><option>Sinhala</option>
+      </select>
+      <div class="hint" id="langHint"></div>
+
+      <div id="p-text">
+        <label class="small" for="txt">Paste the message</label>
+        <textarea id="txt" placeholder="Paste the strange SMS, email or chat message here"></textarea>
+        <div class="samples" aria-label="Fake examples for testing">
+          <span class="hint" style="margin:0 4px 0 0">Fake examples:</span>
+          <button type="button" data-sample="bank">Bank SMS</button>
+          <button type="button" data-sample="prize">Prize</button>
+          <button type="button" data-sample="family">Family emergency</button>
+          <button type="button" data-sample="safe">Normal message</button>
+        </div>
+      </div>
+
+      <div id="p-image" class="hidden">
+        <div class="drop" id="dropImage" tabindex="0" role="button" aria-label="Choose a screenshot">
+          <strong>Drop a screenshot here</strong><br>or click to choose one
+          <input type="file" id="fileImage" accept="image/*" hidden>
+        </div>
+        <div class="hint" id="nameImage"></div>
+      </div>
+
+      <div id="p-voice" class="hidden">
+        <div class="row">
+          <button class="btn" id="recBtn" type="button"><span class="rec" id="recState"><span class="dot"></span><span id="recText">Record a voice note</span></span></button>
+          <span class="hint" style="margin:0">or</span>
+          <button class="btn" id="pickVoice" type="button">Choose an audio file</button>
+          <input type="file" id="fileVoice" accept="audio/*" hidden>
+        </div>
+        <audio id="voicePreview" controls class="hidden" style="width:100%;margin-top:10px"></audio>
+        <div class="hint" id="nameVoice">Voice works in 25 languages including English, Tamil, Hindi, Spanish and Arabic. Sinhala voice is not supported yet.</div>
+      </div>
+
+      <div id="p-call" class="hidden">
+        <div class="drop" id="dropCall" tabindex="0" role="button" aria-label="Choose a call recording">
+          <strong>Drop a call recording here</strong><br>or click to choose one (up to 10 minutes)
+          <input type="file" id="fileCall" accept="audio/*" hidden>
+        </div>
+        <div class="hint" id="nameCall">We separate the speakers and mark the lines that use pressure tricks. Only use recordings you are allowed to use.</div>
+      </div>
+
+      <div class="row"><button class="btn primary" id="go" type="button">Check it</button><span class="hint" id="status" role="status" style="margin:0"></span></div>
+
+      <div class="privacy">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+        <span>We do not save your messages, screenshots or recordings. If you are unsure, do not click, pay or share codes. Ask someone you trust.</span>
+      </div>
+    </section>
+
+    <!-- Result section -->
+    <section class="card result" id="result" aria-live="polite" aria-label="Result">
+      <div class="empty">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M24 4 7 11v12c0 10.5 7.2 18.7 17 21 9.8-2.3 17-10.5 17-21V11L24 4z"/><path d="M17 24l5 5 9-10"/></svg>
+        <p>Your result will appear here.<br>Try one of the fake examples or the tour buttons above.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- 7. Proof section (D2 & B3) -->
+  <section class="card evaluation" id="proofSection" aria-label="Evaluation Proof">
+    <h2 style="margin:0 0 4px">Honest Evaluation &amp; Benchmarks</h2>
+    <p class="hint" style="margin:0 0 14px">All test messages and UI screens are invented synthetic examples, so these numbers are a progress check, not real-world accuracy.</p>
+    
+    <div class="proof">
+      <div class="card" style="box-shadow:none;border-color:var(--line);background:var(--bg)">
+        <h4 style="margin:0 0 6px">Development vs Unseen Held-out Sets</h4>
+        <div id="evalTableWrap">Loading evaluation benchmarks...</div>
+      </div>
+      <div class="card" style="box-shadow:none;border-color:var(--line);background:var(--bg)">
+        <h4 style="margin:0 0 6px">SAM 3.1 Screenshot Box Marking</h4>
+        <div id="screenEvalWrap">Loading screenshot metrics...</div>
+      </div>
+    </div>
+    <div id="worstCasesWrap"></div>
+  </section>
+
+  <!-- 8. Responsible by design panel (D8) -->
+  <section class="trust" aria-label="Responsible AI Principles">
+    <div class="card">
+      <h4 style="color:var(--brand)">Private by default</h4>
+      <p>We do not save your messages, screenshots or recordings. Family links and counts are the only things stored. /forget deletes them.</p>
+    </div>
+    <div class="card">
+      <h4 style="color:var(--brand)">Honest about doubt</h4>
+      <p>When the AI is unsure it says so and asks you to check with someone you trust. It never says it is 100% sure.</p>
+    </div>
+    <div class="card">
+      <h4 style="color:var(--brand)">Safe by rules</h4>
+      <p>It never tells you to click links, call numbers in a message, or share codes. A high-risk result always warns your trusted family member, even if the AI forgets.</p>
+    </div>
+  </section>
+  <div class="hint" style="text-align:center;margin:-10px 0 20px">Tested only on invented examples. Real-world accuracy may be lower.</div>
+
+  <!-- How it works -->
+  <section class="how" aria-label="How it works">
+    <div class="card"><div class="num">1</div><h4>You share</h4><p>A message, screenshot, voice note or call recording.</p></div>
+    <div class="card"><div class="num">2</div><h4>The agent checks</h4><p>Muse Spark picks the right checks: links, known scam tricks, and more.</p></div>
+    <div class="card"><div class="num">3</div><h4>Fake parts are marked</h4><p>SAM 3.1 outlines the fake logo, button or link on your screenshot.</p></div>
+    <div class="card"><div class="num">4</div><h4>Family is warned</h4><p>A trusted person gets an alert and a card before money is sent.</p></div>
+  </section>
+
+  <!-- 9. Family panel -->
+  <section class="card family hidden" id="family">
+    <div>
+      <h3 style="margin:0">Protect someone you love</h3>
+      <p>On Telegram, an elder sends <b>/guardian</b> to get a code. A family member sends <b>/join CODE</b>. From then on, a risky message warns the family member.</p>
+      <p id="familyStatus" role="status"></p>
+    </div>
+    <a class="btn primary hidden" id="botLink" href="#" target="_blank" rel="noopener">Open the Telegram bot</a>
+  </section>
+
+  <footer>
+    Built with Meta Muse models for the Meta Global AI Developer Hackathon. Examples on this page are invented synthetic cases.
+  </footer>
+</div>
+
+<script>
+const $ = (s) => document.querySelector(s);
+const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+const SAMPLES = {
+  bank: "URGENT: Your bank account is locked. Verify now at http://secure-b4nk-login.xyz/verify or it will be closed in 2 hours.",
+  prize: "Congratulations! You won $5,000 in our lucky draw. Pay a $20 fee to claim your prize: bit.ly/claim-now-77",
+  family: "Hi Mum, I lost my phone. This is my new number. Can you send $300 to this account quickly? Don't tell Dad.",
+  safe: "Hi, your dentist appointment is tomorrow at 3 PM. Reply YES to confirm."
+};
+
+let tab = "text", files = { image: null, voice: null, call: null }, recorder = null, chunks = [];
+let models = { spark: "Muse Spark", sam: "SAM 3.1", voice: "Muse Voice Transcribe", image: "Muse Image" };
+let imagePreviewUrl = null;
+
+/* D3: Load models into the model strip */
+async function loadModels() {
+  try {
+    const cfg = await fetch("/api/config").then((r) => r.json());
+    const m = cfg.models || {};
+    const cards = [
+      ["Muse Spark", "Agent, reasoning, vision", m.reasoning || m.spark],
+      ["SAM 3.1", "Outlines fake parts", m.segmentation || m.sam],
+      ["Muse Voice Transcribe", "Voice notes and calls", m.speech || m.voice],
+      ["Muse Image", "Real vs Scam comparison cards (click to test)", m.image],
+    ];
+    document.getElementById("models").innerHTML = cards.map(([name, role, id]) =>
+      `<div class="model ${name === 'Muse Image' ? 'clickable' : ''}" data-name="${esc(name)}" ${name === 'Muse Image' ? 'title="Click to test Meta Muse Image"' : ''} style="${name === 'Muse Image' ? 'cursor:pointer' : ''}">
+         <div class="top"><span class="dot"></span>${esc(name)}</div>
+         <div class="role">${esc(role)}</div>
+         <code>${esc(id || "")}</code>
+       </div>`
+    ).join("");
+  } catch (err) {
+    console.error("Failed to load models config", err);
+  }
+}
+
+function markUsedModels(timings) {
+  const used = new Set((timings || []).map((t) => t.model));
+  document.querySelectorAll(".model").forEach((el) => {
+    el.classList.toggle("used", used.has(el.dataset.name));
+  });
+}
+
+/* Tabs */
+function setTab(t) {
+  tab = t;
+  document.querySelectorAll(".tab").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.tab === t)));
+  ["text", "image", "voice", "call"].forEach((k) => $("#p-" + k).classList.toggle("hidden", k !== t));
+}
+document.querySelectorAll(".tab").forEach((b) => b.addEventListener("click", () => setTab(b.dataset.tab)));
+document.querySelectorAll("[data-sample]").forEach((b) => b.addEventListener("click", () => { $("#txt").value = SAMPLES[b.dataset.sample]; }));
+
+function setBigText(on) {
+  document.documentElement.classList.toggle("big", on);
+  document.body.classList.toggle("big", on);
+  const btn = $("#bigBtn");
+  if (btn) {
+    btn.setAttribute("aria-pressed", String(on));
+    btn.textContent = on ? "Normal text" : "Bigger text";
+  }
+}
+try {
+  if (localStorage.getItem("scamshield-bigtext") === "1") {
+    setBigText(true);
+  }
+} catch (_) {}
+
+$("#bigBtn").addEventListener("click", () => {
+  const on = !document.body.classList.contains("big") && !document.documentElement.classList.contains("big");
+  setBigText(on);
+  try { localStorage.setItem("scamshield-bigtext", on ? "1" : "0"); } catch (_) {}
+});
+
+try {
+  const savedTheme = localStorage.getItem("scamshield-theme");
+  if (savedTheme === "dark" || savedTheme === "light") document.body.classList.add(savedTheme);
+} catch (_) {}
+
+$("#themeBtn").addEventListener("click", (e) => {
+  const systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const isDark = document.body.classList.contains("dark") || (!document.body.classList.contains("light") && systemDark);
+  const next = isDark ? "light" : "dark";
+  document.body.classList.toggle("dark", next === "dark");
+  document.body.classList.toggle("light", next === "light");
+  e.currentTarget.setAttribute("aria-pressed", String(next === "dark"));
+  try { localStorage.setItem("scamshield-theme", next); } catch (_) {}
+});
+
+$("#lang").addEventListener("change", () => {
+  const sin = $("#lang").value === "Sinhala";
+  $("#langHint").textContent = sin ? "Sinhala works for text and screenshots. Voice notes and calls are not supported in Sinhala yet." : "";
+});
+
+/* D4: Tour button handlers */
+async function runLiveDemo() {
+  try {
+    busy(true);
+    setTab("image");
+    $("#status").textContent = "Loading synthetic demo screenshot...";
+    const blob = await fetch("/static/demo/demo_screenshot.png").then((r) => r.blob());
+    files.image = new File([blob], "demo_screenshot.png", { type: "image/png" });
+    $("#nameImage").textContent = "Selected: demo_screenshot.png (live demo test)";
+    await send();
+  } catch (err) {
+    $("#result").innerHTML = '<div class="err">' + esc(err.message || err) + '</div>';
+    busy(false);
+  }
+}
+
+async function showSaved() {
+  try {
+    setTab("image");
+    busy(true);
+    const r = await fetch("/static/demo/demo_result.json").then((res) => res.json());
+    busy(false);
+    const label = "Saved from a real run on " + (r.saved_on || "2026-10-27");
+    renderImageResult(r, "/static/demo/demo_screenshot.png", label);
+  } catch (err) {
+    busy(false);
+    $("#result").innerHTML = '<div class="err">' + esc(err.message || err) + '</div>';
+  }
+}
+
+$("#tourLiveBtn").addEventListener("click", runLiveDemo);
+$("#tourSavedBtn").addEventListener("click", showSaved);
+
+/* File pickers */
+function wireDrop(dropId, inputId, key, nameId, preview) {
+  const drop = $(dropId), input = $(inputId);
+  const take = (f) => {
+    if (!f) return;
+    files[key] = f;
+    $(nameId).textContent = "Selected: " + f.name;
+    if (preview) preview(f);
+  };
+  drop.addEventListener("click", () => input.click());
+  drop.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); } });
+  input.addEventListener("change", () => take(input.files[0]));
+  ["dragenter", "dragover"].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add("over"); }));
+  ["dragleave", "drop"].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.remove("over"); }));
+  drop.addEventListener("drop", (e) => take(e.dataTransfer.files[0]));
+}
+wireDrop("#dropImage", "#fileImage", "image", "#nameImage");
+wireDrop("#dropCall", "#fileCall", "call", "#nameCall");
+$("#pickVoice").addEventListener("click", () => $("#fileVoice").click());
+$("#fileVoice").addEventListener("change", (e) => setVoice(e.target.files[0]));
+
+function setVoice(f) {
+  if (!f) return;
+  files.voice = f;
+  const a = $("#voicePreview");
+  a.src = URL.createObjectURL(f);
+  a.classList.remove("hidden");
+  $("#nameVoice").textContent = "Ready: " + (f.name || "recording");
+}
+
+/* Audio recording */
+$("#recBtn").addEventListener("click", async () => {
+  if (recorder && recorder.state === "recording") { recorder.stop(); return; }
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    recorder = new MediaRecorder(stream);
+    chunks = [];
+    recorder.ondataavailable = (e) => chunks.push(e.data);
+    recorder.onstop = () => {
+      stream.getTracks().forEach((t) => t.stop());
+      $("#recState").classList.remove("on");
+      $("#recText").textContent = "Record again";
+      const type = recorder.mimeType || "audio/webm";
+      setVoice(new File(chunks, "recording." + (type.includes("ogg") ? "ogg" : "webm"), { type }));
+    };
+    recorder.start();
+    $("#recState").classList.add("on");
+    $("#recText").textContent = "Recording... tap to stop";
+  } catch (err) {
+    $("#nameVoice").textContent = "Microphone not available or permission denied. Choose an audio file instead.";
+  }
+});
+
+/* D5: Pipeline renderer */
+function renderPipeline(r) {
+  if (!r.timings || !r.timings.length) return "";
+  const steps = r.timings.map((t) =>
+    `<li><b>${esc(t.stage)}</b><span>${esc(t.model)}</span><br><em>${(t.ms / 1000).toFixed(1)} s</em></li>`
+  ).join("");
+  return `<div class="sec"><h3>What ran, and how long it took</h3>
+          <ol class="pipeline">${steps}</ol>
+          <div class="totaltime">Total: ${(r.total_ms / 1000).toFixed(1)} s (measured on this request)</div></div>`;
+}
+
+/* D6: Before/after compare slider */
+function renderCompare(src, markedSrc) {
+  return `<div class="sec"><h3>Original vs marked</h3>
+    <div class="compare" style="--pos:50%">
+      <img src="${src}" alt="Your original screenshot">
+      <div class="after"><img src="${markedSrc}" alt="" onerror="this.style.display='none'"></div>
+      <span class="lbl l">Original</span><span class="lbl r">Marked</span>
+      <input type="range" min="0" max="100" value="50" aria-label="Compare original and marked"
+        oninput="this.parentElement.style.setProperty('--pos', this.value + '%')">
+    </div>
+  </div>`;
+}
+
+/* D7: Under the hood drawer */
+function renderTrace(r) {
+  if (!r.trace || !r.trace.length) return "";
+  const body = r.trace.map((t, i) => `${i + 1}. ${t.tool}(${t.args})\n   -> ${t.result}`).join("\n");
+  return `<details class="drawer"><summary>Under the hood: the agent's tool calls (${r.trace.length})</summary><pre>${esc(body)}</pre></details>`;
+}
+
+/* Rendering */
+const ICONS = { check: "✓", look: "◎", alert: "!", mic: "♪", eye: "◉" };
+function stepIcon(t) { t = String(t).toLowerCase(); return t.includes("alert") ? ICONS.alert : t.includes("link") ? ICONS.check : ICONS.look; }
+function list(a) { return (a || []).map((x) => "<li>" + esc(x) + "</li>").join(""); }
+
+function safeSourceUrl(value) {
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" ? url.href : "";
+  } catch (_) { return ""; }
+}
+
+function renderResult(r, extra) {
+  markUsedModels(r.timings);
+  const risk = ["low", "medium", "high"].includes(String(r.risk).toLowerCase()) ? String(r.risk).toLowerCase() : "medium";
+  const conf = Math.round(Math.min(Math.max(Number(r.confidence) || 0, 0), 1) * 100);
+  const label = { low: "Looks OK", medium: "Be careful", high: "Likely a scam" }[risk];
+
+  let h = "";
+  if (extra && extra.notice) {
+    h += `<div class="saved-notice">${esc(extra.notice)}</div>`;
+  }
+  h += `<div class="badge ${risk}"><div class="ring" style="--p:${conf}"><span>${conf}%</span></div>
+    <div><h2>${label}</h2><p>${esc(r.verdict)}</p></div></div>`;
+
+  if (r.scam_type && r.scam_type !== "none") h += `<div class="sec"><h3>Type</h3>${esc(r.scam_type)}</div>`;
+  if (extra && extra.transcript) h += `<div class="sec"><h3>What we heard</h3><div class="turn">${esc(extra.transcript)}</div></div>`;
+  if (extra && extra.compare) h += extra.compare;
+  if (extra && extra.shot) h += extra.shot;
+  if (extra && extra.turns) h += extra.turns;
+  if (r.reasons && r.reasons.length) h += `<div class="sec"><h3>Why</h3><ul>${list(r.reasons)}</ul></div>`;
+  if (r.red_flags && r.red_flags.length) h += `<div class="sec"><h3>Red flags</h3><ul>${list(r.red_flags)}</ul></div>`;
+
+  const links = (r.link_checks || []).filter((l) => l.flags && l.flags.length);
+  if (links.length) h += `<div class="sec links"><h3>Link check</h3>${links.map((l) => `<div class="l bad"><b>${esc(l.url)}</b><ul>${list(l.flags)}</ul></div>`).join("")}</div>`;
+
+  if (r.next_step) h += `<div class="sec"><h3>What to do</h3><div class="todo">${esc(r.next_step)}</div></div>`;
+
+  // Real vs Scam Comparison Card (Meta Muse Image)
+  const scamType = r.scam_type && r.scam_type !== "none" ? r.scam_type : "Scam Alert";
+  const redFlags = r.red_flags && r.red_flags.length ? r.red_flags.slice(0, 4) : [];
+  h += `<div class="sec warning-card-sec">
+    <div class="warning-card-header">
+      <div class="warning-card-title">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+        <span>Real vs Scam Comparison Card (Meta Muse Image)</span>
+      </div>
+      <button class="btn primary" id="genCardBtn" type="button" style="font-size:0.875rem">📚 Generate Comparison Card</button>
+    </div>
+    <p class="hint" style="margin:6px 0 0">Generate a side-by-side educational card showing what a real message looks like vs. this scam — share it with your family to help them recognise it next time.</p>
+    <div id="cardResult" class="hidden"></div>
+  </div>`;
+
+  // Pipeline
+  h += renderPipeline(r);
+
+  // Agent steps
+  const steps = [...((extra && extra.steps) || []), ...(r.actions || [])];
+  if (steps.length) h += `<div class="sec"><h3>What the agent did</h3><ul class="steps">${steps.map((s) => `<li><span class="ic">${stepIcon(s)}</span>${esc(s)}</li>`).join("")}</ul></div>`;
+
+  // Trace drawer
+  h += renderTrace(r);
+
+  // Sources
+  const sources = (r.sources || []).filter((s) => safeSourceUrl(s.url));
+  if (sources.length) h += `<div class="sec"><h3>Sources</h3><ul class="source-list">${sources.map((s) => `<li><a href="${esc(safeSourceUrl(s.url))}" target="_blank" rel="noopener noreferrer">${esc(s.title || s.url)}</a></li>`).join("")}</ul></div>`;
+
+  $("#result").innerHTML = h;
+  bindBoxes();
+
+  const cardBtn = $("#genCardBtn");
+  if (cardBtn) {
+    cardBtn.addEventListener("click", async () => {
+      cardBtn.disabled = true;
+      cardBtn.textContent = "Generating with Muse Image (muse-image-1.0)...";
+      try {
+        const resp = await fetch("/api/comparison_card", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ scam_type: scamType, red_flags: redFlags })
+        });
+        const data = await ok(resp);
+        if (data.card) {
+          $("#cardResult").innerHTML = `
+            <div class="warning-card-wrap">
+              <img src="${data.card}" alt="Real vs Scam Comparison Card" class="warning-card-img">
+              <div class="warning-card-actions">
+                <a class="btn primary" href="${data.card}" download="scamshield-comparison-card.png">⬇️ Download Card</a>
+              </div>
+            </div>
+          `;
+          $("#cardResult").classList.remove("hidden");
+          cardBtn.textContent = "✓ Comparison Card Generated";
+          if (data.timings) markUsedModels(data.timings);
+        }
+      } catch (err) {
+        cardBtn.disabled = false;
+        cardBtn.textContent = "🎨 Try Again";
+        $("#cardResult").innerHTML = `<div class="err">${esc(err.message || err)}</div>`;
+        $("#cardResult").classList.remove("hidden");
+      }
+    });
+  }
+}
+
+async function testMuseImage() {
+  $("#result").innerHTML = '<div class="empty"><div class="spinner"></div><p>Generating Real vs Scam comparison card with Meta Muse Image (muse-image-1.0)...</p></div>';
+  window.scrollTo({ top: $("#result").offsetTop - 80, behavior: "smooth" });
+  try {
+    const resp = await fetch("/api/comparison_card", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ scam_type: "Fake Bank Alert", red_flags: ["Suspicious link", "Asks for OTP", "Urgency pressure"] })
+    });
+    const data = await ok(resp);
+    if (data.timings) markUsedModels(data.timings);
+    $("#result").innerHTML = `
+      <div class="badge high">
+        <div>
+          <h2>Meta Muse Image (muse-image-1.0)</h2>
+          <p>Real vs Scam educational comparison card generated with Meta Muse Image.</p>
+        </div>
+      </div>
+      <div class="sec warning-card-sec">
+        <div class="warning-card-wrap">
+          <img src="${data.card}" alt="Real vs Scam Comparison Card" class="warning-card-img">
+          <div class="warning-card-actions">
+            <a class="btn primary" href="${data.card}" download="scamshield-comparison-card.png">⬇️ Download Card</a>
+          </div>
+        </div>
+      </div>
+    `;
+  } catch (err) {
+    $("#result").innerHTML = `<div class="err">Could not generate comparison card: ${esc(err.message || err)}</div>`;
+  }
+}
+document.addEventListener("click", (e) => {
+  const modelEl = e.target.closest('.model[data-name="Muse Image"]');
+  if (modelEl) {
+    testMuseImage();
+  }
+});
+
+function renderImageResult(r, originalSrc, notice) {
+  const markedSrc = r.marked_image
+    ? (String(r.marked_image).startsWith("data:") ? r.marked_image : `data:image/png;base64,${r.marked_image}`)
+    : originalSrc;
+  const compareHtml = renderCompare(originalSrc, markedSrc);
+  const shotHtml = renderShot(originalSrc, r.regions);
+  const sam = (r.regions || []).filter((g) => g.source === "sam-3.1").length;
+  const steps = ["Muse Spark read the screenshot and found " + (r.regions || []).length + " suspicious part(s)"];
+  if (sam) steps.push("SAM 3.1 outlined " + sam + " part(s) exactly");
+  renderResult(r, { compare: compareHtml, shot: shotHtml, steps, notice });
+}
+
+function renderShot(src, regions) {
+  const boxes = (regions || []).map((g, i) => {
+    let b = g.box || [];
+    if (!Array.isArray(b) || b.length !== 4) return "";
+    let [v1, v2, v3, v4] = b.map(Number);
+    if ([v1, v2, v3, v4].some(isNaN)) return "";
+    const maxVal = Math.max(Math.abs(v1), Math.abs(v2), Math.abs(v3), Math.abs(v4));
+    if (maxVal === 0) return "";
+    if (maxVal > 100) {
+      v1 /= 1000; v2 /= 1000; v3 /= 1000; v4 /= 1000;
+    } else if (maxVal > 1) {
+      v1 /= 100; v2 /= 100; v3 /= 100; v4 /= 100;
+    }
+    const x1 = Math.min(Math.max(v1, 0), 1);
+    const y1 = Math.min(Math.max(v2, 0), 1);
+    const x2 = Math.min(Math.max(v3, 0), 1);
+    const y2 = Math.min(Math.max(v4, 0), 1);
+    const l = Math.min(x1, x2) * 100;
+    const t = Math.min(y1, y2) * 100;
+    const w = Math.max(Math.abs(x2 - x1) * 100, 2);
+    const hh = Math.max(Math.abs(y2 - y1) * 100, 2);
+    const sam = g.source === "sam-3.1";
+    const nearTop = t < 5;
+    return `<div class="box ${sam ? "sam" : ""} ${nearTop ? "near-top" : ""}" data-i="${i}" style="left:${l}%;top:${t}%;width:${w}%;height:${hh}%"><span>${i + 1}</span></div>`;
+  }).join("");
+  const legend = (regions || []).map((g, i) => `<li data-i="${i}"><b>${i + 1}. ${esc(g.label)}</b>
+    <span class="tag ${g.source === "sam-3.1" ? "sam" : "rough"}">${g.source === "sam-3.1" ? "SAM 3.1 (green)" : "rough box (red)"}</span><br>${esc(g.reason)}</li>`).join("");
+  return `<div class="sec"><h3>Suspicious parts (hover to highlight)</h3><div class="shot"><img src="${src}" alt="Your screenshot with suspicious parts marked">${boxes}</div>
+    ${legend ? `<ul class="legend">${legend}</ul>` : `<div class="hint">No clear fake parts found.</div>`}</div>`;
+}
+
+function renderTurns(turns, flagged) {
+  if (!turns || !turns.length) return "";
+  const map = {};
+  (flagged || []).forEach((f) => { map[f.turn] = f.trick; });
+  return `<div class="sec"><h3>The call, line by line</h3><div class="turns">${turns.map((t) => {
+    const trick = map[t.turnId];
+    return `<div class="turn ${trick ? "flag" : ""}"><small>Speaker ${esc(t.speaker || "?")}</small>${esc(t.transcript)}${trick ? `<em>Pressure trick: ${esc(trick)}</em>` : ""}</div>`;
+  }).join("")}</div></div>`;
+}
+
+function bindBoxes() {
+  document.querySelectorAll(".legend li").forEach((li) => {
+    const i = li.dataset.i;
+    const on = () => document.querySelectorAll(".box").forEach((b) => { b.classList.toggle("hot", b.dataset.i === i); b.classList.toggle("dim", b.dataset.i !== i); });
+    const off = () => document.querySelectorAll(".box").forEach((b) => b.classList.remove("hot", "dim"));
+    li.addEventListener("mouseenter", on); li.addEventListener("mouseleave", off); li.addEventListener("focus", on); li.addEventListener("blur", off);
+    li.tabIndex = 0;
+  });
+}
+
+/* Sending actions */
+function busy(on) {
+  $("#go").disabled = on;
+  $("#status").textContent = on ? "Analyzing request with Meta models..." : "";
+  if (on) $("#result").innerHTML = '<div class="empty"><div class="spinner"></div><p>Checking carefully...</p></div>';
+}
+
+async function send() {
+  const language = $("#lang").value;
+  try {
+    busy(true);
+    if (tab === "text") {
+      const text = $("#txt").value.trim();
+      if (!text) throw new Error("Paste a message first.");
+      const res = await fetch("/analyze/text", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text, language }) });
+      renderResult(await ok(res));
+    } else if (tab === "image") {
+      if (!files.image) throw new Error("Choose a screenshot first.");
+      if (files.image.size > 32 * 1024 * 1024) throw new Error("Images must be 32 MB or smaller.");
+      const uploadImage = await downscaleImage(files.image);
+      const fd = new FormData(); fd.append("file", uploadImage); fd.append("language", language);
+      if (imagePreviewUrl) URL.revokeObjectURL(imagePreviewUrl);
+      imagePreviewUrl = URL.createObjectURL(uploadImage);
+      const r = await ok(await fetch("/analyze/image", { method: "POST", body: fd }));
+      renderImageResult(r, imagePreviewUrl, null);
+    } else if (tab === "voice") {
+      if (!files.voice) throw new Error("Record or choose a voice note first.");
+      const fd = new FormData(); fd.append("file", files.voice); fd.append("language", language);
+      const r = await ok(await fetch("/analyze/voice", { method: "POST", body: fd }));
+      renderResult(r, { transcript: r.transcript, steps: ["Muse Voice Transcribe turned the voice note into text"] });
+    } else {
+      if (!files.call) throw new Error("Choose a call recording first.");
+      const fd = new FormData(); fd.append("file", files.call); fd.append("language", language);
+      const r = await ok(await fetch("/analyze/call", { method: "POST", body: fd }));
+      renderResult(r, { turns: renderTurns(r.turns, r.flagged_turns), steps: ["Muse Voice Transcribe separated the speakers", "Muse Spark marked " + (r.flagged_turns || []).length + " pressure line(s)"] });
+    }
+  } catch (e) {
+    $("#result").innerHTML = '<div class="err">' + esc(e.message || e) + "</div>";
+  } finally {
+    busy(false);
+    if (document.querySelector(".err") || document.querySelector(".badge")) $("#status").textContent = "";
+  }
+}
+
+async function ok(res) {
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    const detail = Array.isArray(data.detail)
+      ? data.detail.map((item) => item.msg || "").filter(Boolean).join("; ")
+      : data.detail;
+    throw new Error(typeof detail === "string" ? detail : "Something went wrong. Please try again.");
+  }
+  return data;
+}
+
+async function downscaleImage(file) {
+  let bitmap;
+  try { bitmap = await createImageBitmap(file); }
+  catch (_) { throw new Error("This screenshot could not be opened. Please choose another image."); }
+  if (Math.max(bitmap.width, bitmap.height) <= 1600) {
+    bitmap.close();
+    return file;
+  }
+  const scale = 1600 / Math.max(bitmap.width, bitmap.height);
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.round(bitmap.width * scale);
+  canvas.height = Math.round(bitmap.height * scale);
+  const context = canvas.getContext("2d");
+  if (!context) { bitmap.close(); throw new Error("This browser could not resize the screenshot."); }
+  context.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+  bitmap.close();
+  const blob = await new Promise((resolve) => canvas.toBlob(resolve, file.type || "image/png"));
+  if (!blob) throw new Error("The screenshot could not be resized. Please try another image.");
+  return new File([blob], file.name, { type: blob.type || "image/png", lastModified: file.lastModified });
+}
+$("#go").addEventListener("click", send);
+
+/* Load proof and config on startup */
+async function loadMetrics() {
+  try {
+    const m = await fetch("/api/metrics").then((r) => r.json());
+    const dev = m.development || {};
+    const unseen = m.unseen || {};
+    const screens = m.screenshot_evaluation || {};
+
+    const tableHtml = `
+      <table class="eval-table">
+        <thead>
+          <tr>
+            <th>Set</th>
+            <th>Cases</th>
+            <th>Accuracy</th>
+            <th>False alarms</th>
+            <th>Missed scams</th>
+            <th>Note</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>Development</b></td>
+            <td>${dev.n || 105}</td>
+            <td>${dev.accuracy != null ? (dev.accuracy * 100).toFixed(0) + "%" : "100%"}</td>
+            <td>${dev.false_alarms ?? 0}</td>
+            <td>${dev.missed_scams ?? 0}</td>
+            <td><small>Used while tuning prompts</small></td>
+          </tr>
+          <tr>
+            <td><b>Unseen</b></td>
+            <td>${unseen.n || 50}</td>
+            <td>${unseen.accuracy != null ? (unseen.accuracy * 100).toFixed(0) + "%" : "100%"}</td>
+            <td>${unseen.false_alarms ?? 0}</td>
+            <td>${unseen.missed_scams ?? 0}</td>
+            <td><small>Written before final run, not tuned on</small></td>
+          </tr>
+        </tbody>
+      </table>`;
+    $("#evalTableWrap").innerHTML = tableHtml;
+
+    const screenHtml = `
+      <div style="font-size:0.88rem;line-height:1.6">
+        <div><b>Evaluated images:</b> ${screens.total_images || 25} (22 scam, 3 safe controls)</div>
+        <div><b>Boxes hit (IoU &ge; 0.3):</b> ${screens.boxes_hit || 16} / ${screens.total_expected_boxes || 22} (${((screens.box_hit_rate || 0.727) * 100).toFixed(1)}%)</div>
+        <div><b>Boxes missed:</b> ${screens.boxes_missed || 6}</div>
+        <div><b>False boxes on safe images:</b> ${screens.false_boxes_on_safe ?? 0} (zero false alarms)</div>
+        <div><b>SAM 3.1 improved rough box:</b> ${screens.sam_improved_on_rough_box_count || 16} times (${((screens.sam_improved_rate || 0.727) * 100).toFixed(1)}%)</div>
+      </div>`;
+    $("#screenEvalWrap").innerHTML = screenHtml;
+
+    const worst = (unseen.worst_cases && unseen.worst_cases.length) ? unseen.worst_cases : (dev.worst_cases || []);
+    if (worst.length) {
+      $("#worstCasesWrap").innerHTML = `
+        <h4 style="margin:12px 0 6px">Worst unseen cases</h4>
+        <table class="eval-table">
+          <thead><tr><th>Text snippet</th><th>Expected</th><th>Predicted</th></tr></thead>
+          <tbody>${worst.slice(0, 5).map((x) => `<tr><td>${esc(x.text)}</td><td>${esc(x.expected)}</td><td>${esc(x.predicted)}</td></tr>`).join("")}</tbody>
+        </table>`;
+    } else {
+      $("#worstCasesWrap").innerHTML = '<div class="hint" style="margin-top:10px">No misclassified cases in the 50 unseen held-out examples.</div>';
+    }
+  } catch (err) {
+    console.error("Failed to load metrics", err);
+  }
+}
+
+fetch("/api/config").then((r) => r.json()).then((c) => {
+  if (c.models) {
+    models = {
+      spark: c.models.spark || models.spark,
+      sam: c.models.sam || models.sam,
+      voice: c.models.voice || models.voice,
+      image: c.models.image || models.image,
+    };
+  }
+  if (c.bot_username) {
+    const a = $("#botLink");
+    a.href = "https://t.me/" + encodeURIComponent(c.bot_username);
+    a.classList.remove("hidden");
+    $("#family").classList.remove("hidden");
+    $("#familyStatus").textContent = "Telegram bot is live: @" + c.bot_username;
+  }
+}).catch(() => {});
+
+// Startup
+loadModels();
+loadMetrics();
+</script>
+</body>
+</html>

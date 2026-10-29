@@ -1,0 +1,9 @@
+openai>=1.50.0
+fastapi>=0.110.0
+uvicorn>=0.29.0
+python-multipart>=0.0.9
+pillow>=10.0.0
+python-dotenv>=1.0.0
+requests==2.32.3
+python-telegram-bot==21.6
+websockets>=12.0
