@@ -158,13 +158,20 @@ I designed, directed, tested and verified this project myself during the hackath
 
 Captured from the running app with synthetic example content only.
 
-| View | Image |
-|---|---|
-| Home, desktop width | [docs/screenshots/home_1280.png](docs/screenshots/home_1280.png) |
-| Home, tablet width | [docs/screenshots/tablet_768.png](docs/screenshots/tablet_768.png) |
-| Home, phone width | [docs/screenshots/mobile_375.png](docs/screenshots/mobile_375.png) |
-| Dark mode | [docs/screenshots/dark_mode.png](docs/screenshots/dark_mode.png) |
-| Screenshot analysis result | [docs/screenshots/screenshot_result_compare.png](docs/screenshots/screenshot_result_compare.png) |
+### 1. Web Application & Scam Analysis
+| Home (Desktop 1280px) | Scam Analysis Result & SAM 3.1 Segmentation |
+| :---: | :---: |
+| ![Home Desktop](docs/screenshots/home_1280.png) | ![Screenshot Analysis Result](docs/screenshots/screenshot_result_compare.png) |
+
+### 2. Meta Muse Image (Real vs Scam Comparison Card) & Dark Mode
+| Educational Comparison Card (muse-image-1.0) | Dark Mode Interface |
+| :---: | :---: |
+| ![Real vs Scam Comparison Card](docs/screenshots/comparison_card.png) | ![Dark Mode](docs/screenshots/dark_mode.png) |
+
+### 3. Responsive Design (Tablet & Mobile)
+| Tablet View (768px) | Mobile Phone View (375px) |
+| :---: | :---: |
+| ![Tablet View](docs/screenshots/tablet_768.png) | ![Mobile View](docs/screenshots/mobile_375.png) |
 
 
 ## Project documentation
