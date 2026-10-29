@@ -303,8 +303,11 @@ $("#bigBtn").addEventListener("click", () => {
 });
 
 try {
-  const savedTheme = localStorage.getItem("scamshield-theme");
+  const p = new URLSearchParams(window.location.search);
+  const qTheme = p.get("theme");
+  const savedTheme = qTheme || localStorage.getItem("scamshield-theme");
   if (savedTheme === "dark" || savedTheme === "light") document.body.classList.add(savedTheme);
+  if (p.get("example") === "1") setTimeout(showSaved, 200);
 } catch (_) {}
 
 $("#themeBtn").addEventListener("click", (e) => {
