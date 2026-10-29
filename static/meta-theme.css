@@ -1239,3 +1239,207 @@ footer {
 }
 
 .dot.on { background: #31a24c; animation: pulse 1.2s infinite; box-shadow: 0 0 0 2px rgba(49,162,76,.2); }
+
+/* =====================================================================
+   Mobile Responsive Rules (< 600px & .mobile-preview)
+   Prevents horizontal clipping, text truncation, and card overflow
+   ===================================================================== */
+body.mobile-preview {
+  width: 375px !important;
+  max-width: 375px !important;
+  margin: 0 !important;
+  overflow-x: hidden !important;
+}
+
+@media (max-width: 600px), (max-device-width: 600px) {
+  html, body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+  }
+}
+
+body.mobile-preview,
+body.mobile-preview .wrap,
+@media (max-width: 600px) {
+  .wrap {
+    padding: 0 12px !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Header & Navigation */
+  header.top {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    margin: 0 !important;
+    padding: 10px 0 !important;
+    gap: 10px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .logo {
+    font-size: 1.05rem !important;
+  }
+
+  .logo svg {
+    width: 26px !important;
+    height: 26px !important;
+  }
+
+  .toolbar {
+    width: 100% !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    box-sizing: border-box !important;
+  }
+
+  .toolbar .btn {
+    flex: 1 1 calc(50% - 6px) !important;
+    text-align: center !important;
+    justify-content: center !important;
+    padding: 6px 8px !important;
+    font-size: 0.78rem !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Hero Banner */
+  .hero-band {
+    padding: 18px 14px !important;
+    margin: 12px 0 16px !important;
+    border-radius: 14px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .hero-band .eyebrow {
+    font-size: 0.68rem !important;
+    padding: 3px 10px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .hero-band h1 {
+    font-size: 1.35rem !important;
+    line-height: 1.25 !important;
+    margin-bottom: 8px !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .hero-band p {
+    font-size: 0.85rem !important;
+    line-height: 1.48 !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+
+  /* Quick Tour */
+  .tour {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    padding: 14px !important;
+    gap: 10px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .tour p {
+    font-size: 0.9rem !important;
+  }
+
+  .tour small {
+    font-size: 0.78rem !important;
+  }
+
+  .tour-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 7px !important;
+  }
+
+  .tour-actions .btn {
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+    padding: 7px 12px !important;
+    font-size: 0.82rem !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Model Strip */
+  .models {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    margin-bottom: 16px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .model {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 10px 12px !important;
+  }
+
+  .model .top {
+    font-size: 0.85rem !important;
+  }
+
+  .model .role {
+    font-size: 0.74rem !important;
+    margin: 2px 0 4px !important;
+  }
+
+  /* Tabs */
+  .tabs {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 4px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .tab {
+    padding: 8px 4px !important;
+    font-size: 0.78rem !important;
+    text-align: center !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+  }
+
+  /* Main Card & Result */
+  .card {
+    padding: 14px !important;
+    border-radius: var(--radius-sm) !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Samples */
+  .samples {
+    gap: 4px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .samples button {
+    padding: 3px 8px !important;
+    font-size: 0.72rem !important;
+  }
+
+  /* How & Trust cards */
+  .how, .trust, .stats {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .warning-card-img, .compare {
+    max-width: 100% !important;
+  }
+}

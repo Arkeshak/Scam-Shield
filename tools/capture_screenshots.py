@@ -64,7 +64,7 @@ def main():
             ("home_1280.png", "http://127.0.0.1:8000/", 1280, 920, 1000),
             ("dark_mode.png", "http://127.0.0.1:8000/?theme=dark", 1280, 920, 1000),
             ("tablet_768.png", "http://127.0.0.1:8000/", 768, 1024, 1000),
-            ("mobile_375.png", "http://127.0.0.1:8000/", 375, 812, 1000),
+            ("mobile_375.png", "http://127.0.0.1:8000/?mobile=1", 375, 812, 1000),
             ("screenshot_result_compare.png", "http://127.0.0.1:8000/?example=1", 1280, 1100, 2500),
         ]
 
@@ -95,3 +95,4 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+
