@@ -1,5 +1,11 @@
 # ScamShield Family
 
+[![Live Demo on Azure](https://img.shields.io/badge/Live%20Demo-Azure%20App%20Service-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white)](https://scamshield-family-bvg9bce5e6ctcrba.centralindia-01.azurewebsites.net)
+[![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Arkeshak/Scam-Shield)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
+
+> 🌐 **Live Web Application:** [https://scamshield-family-bvg9bce5e6ctcrba.centralindia-01.azurewebsites.net](https://scamshield-family-bvg9bce5e6ctcrba.centralindia-01.azurewebsites.net)
+
 An AI scam bodyguard prototype for families. Check a suspicious message,
 screenshot, voice note, or recorded call; get a plain-language explanation,
 suspicious screenshot boxes, and (when linked through Telegram) a guardian alert
