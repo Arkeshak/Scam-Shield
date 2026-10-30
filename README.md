@@ -17,6 +17,70 @@ All code in this repo was written during the hackathon (Oct 26 – Nov 4, 2026).
 - **Voice Notes & Audio Diarization:** Muse Voice Transcribe transcribes supported-language voice notes and diarizes calls. **Sinhala voice transcription is not supported.**
 - **Family Guardian Alerts:** When linked via expiring Telegram invite codes, guardians receive real-time alerts. Model results do not replace checking official channels.
 
+## System Architecture & End-to-End Workflows
+
+```mermaid
+flowchart TD
+    subgraph Inputs ["Multimodal User Inputs"]
+        A1["💬 Text Message / SMS / Email"]
+        A2["📸 Screenshot / App Interface"]
+        A3["🎙️ Live Call / Voice Stream"]
+    end
+
+    subgraph FastLayer ["Fast Triage & Safety Layer (< 50ms)"]
+        B1["Local Link Scanner<br/>(Typosquatting & Shorteners)"]
+        B2["Microsecond Pressure Regex<br/>(OTP, Gift Cards, Arrest threats)"]
+    end
+
+    subgraph ModelPipeline ["Meta Muse Model Pipeline"]
+        C1["Muse Voice Transcribe Realtime<br/>(Full-duplex WebSocket ASR)"]
+        C2["Muse Spark 1.3 Reasoning Agent<br/>(Schema-constrained Scam Triage)"]
+        C3["SAM 3.1 Spatial Segmentation<br/>(Pixel-refined Phishing Boxes)"]
+        C4["Meta Muse Image 1.0<br/>(Real vs Scam Comparison Cards)"]
+    end
+
+    subgraph Outputs ["Protective Actions & Guardian Network"]
+        D1["Plain-Language Scam Verdict<br/>(25+ Regional Languages)"]
+        D2["Emergency Speakerphone Alarm<br/>('HANG UP IMMEDIATELY')"]
+        D3["🚨 Telegram Family Guardian Alert<br/>(Dispatched to Loved Ones)"]
+        D4["Educational Contrast Cards<br/>(Save & Share with Elders)"]
+    end
+
+    A1 --> B1 --> C2
+    A2 --> C2 --> C3
+    A3 --> C1 --> B2 --> C2
+    C2 --> D1
+    B2 -- High Risk Panic --> D2
+    C2 -- High Risk Result --> D3
+    C3 --> D4
+    C4 --> D4
+```
+
+### Detailed Workflow Breakdown
+
+1. **Live Call Guard Workflow (Speakerphone Monitoring)**
+   - **Stream Ingestion**: Incoming audio from an elderly user's phone on speakerphone streams across a full-duplex WebSocket (`wss://api.meta.ai/v1/asr/realtime`).
+   - **Dual-Speed Inspection**: As audio fragments arrive, microsecond regex heuristics continuously scan the stream for high-urgency extortion cues (demands for OTP codes, gift card payments, remote desktop tools like AnyDesk, or fake police warrants).
+   - **Muse Spark Verification**: Background reasoning cycles summarize speaker diarization, evaluate escalation, and classify threat severity.
+   - **Instant Family Intervention**: If critical risk triggers, the web UI flashes a high-contrast emergency banner instructing the elder to hang up, while an out-of-band Telegram alert is dispatched immediately to the family guardian.
+
+2. **Screenshot Inspection & SAM 3.1 Segmentation Workflow**
+   - **Image Ingestion & Pre-scaling**: Uploaded screenshots are resized to at most 1600px along their longest edge to optimize processing time while preserving text fidelity.
+   - **Semantic Target Detection**: `muse-spark-1.3` analyzes the visual context, identifies deceptive components (e.g., spoofed banking URLs, fake "Urgent Update" buttons, fraudulent logos), and proposes coarse bounding boxes.
+   - **SAM 3.1 Mask Refinement**: The bounding proposals and positive point prompts are fed into `sam-3.1`, segmenting the exact interface element with sub-pixel boundary refinement.
+   - **Interactive Visual Feedback**: The frontend presents an interactive slider contrasting the original screenshot with annotated high-risk regions.
+
+3. **Telegram Family Guardian Alert Loop**
+   - **Zero-Friction Linking**: The elder taps `/guardian` to generate a short-lived 6-digit invite code. The family caregiver enters `/join <code>` (or clicks a direct deep link) to establish a private guardian link.
+   - **Fast-Path Triage (`BOT_FAST_MODE=1`)**: When the elder forwards a suspicious message, local link inspection runs in milliseconds, followed by a single structured Muse Spark call.
+   - **Immediate Alert Dispatch**: If high risk is detected, the bot dispatches an immediate text alert to the guardian's Telegram within seconds, advising them to contact the elder before money is transferred.
+   - **Privacy by Design**: Messages, screenshots, and audio recordings are never stored on disk or written to the SQLite database. Only anonymous user IDs, guardian pairs, and rate-limit counters are kept.
+
+4. **Meta Muse Image Educational Comparison Engine**
+   - **On-Demand Synthesis**: Whenever an elder or family member taps "Show genuine comparison card", the system invokes `muse-image-1.0`.
+   - **Visual Contrast Generation**: The model pairs the scam scenario against a verified genuine communication (e.g. Real Bank SMS vs Scam SMS, Real Delivery Note vs Phishing Link).
+   - **Vector Rendering Fallback**: A built-in high-contrast vector template engine guarantees beautiful, legible educational cards with crisp checkmarks, cross icons, and actionable golden rules.
+
 ## Meta models and tools
 
 | Model / tool | Use | Implementation |
@@ -170,7 +234,12 @@ Captured from the running app with synthetic example content only.
 | :---: | :---: |
 | ![Real vs Scam Comparison Card](docs/screenshots/comparison_card.png) | ![Dark Mode](docs/screenshots/dark_mode.png) |
 
-### 3. Responsive Design (Tablet & Mobile)
+### 3. Telegram Bot & Family Guardian Alert
+| Telegram Elder Scam Triage & Instant Caregiver Alert |
+| :---: |
+| ![Telegram Family Alert](docs/screenshots/telegram_bot.png) |
+
+### 4. Responsive Design (Tablet & Mobile)
 | Tablet View (768px) | Mobile Phone View (375px) |
 | :---: | :---: |
 | ![Tablet View](docs/screenshots/tablet_768.png) | ![Mobile View](docs/screenshots/mobile_375.png) |
