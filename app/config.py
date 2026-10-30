@@ -15,6 +15,10 @@ BASE_URL = os.environ.get("BASE_URL", "https://api.meta.ai/v1")
 ASR_URL = "https://api.meta.ai/v1/asr/transcribe"
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
 TELEGRAM_BOT_USERNAME = os.environ.get("TELEGRAM_BOT_USERNAME", "").lstrip("@")
+# Optional, for slow or filtered networks. Defaults keep python-telegram-bot's own behaviour.
+TELEGRAM_CONNECT_TIMEOUT = float(os.environ.get("TELEGRAM_CONNECT_TIMEOUT", "0") or 0)
+TELEGRAM_PROXY = os.environ.get("TELEGRAM_PROXY", "")
 DB_PATH = os.environ.get("DB_PATH", "data/scamshield.db")
-# Telegram speed: 1 = run our own checks first, then ONE Muse Spark call (fast). 0 = full tool-calling agent (slower).
+# Speed setting: 1 = run fast mode (instant local link checks + single model call). 0 = full multi-turn tool-calling agent.
+FAST_MODE = os.environ.get("FAST_MODE", "1") == "1"
 BOT_FAST_MODE = os.environ.get("BOT_FAST_MODE", "1") == "1"

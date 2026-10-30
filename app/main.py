@@ -19,10 +19,12 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 from . import call, config, guard, llm, store
-from .agent import AgentContext, run_agent
+from .agent import AgentContext, run_agent, run_agent_fast
 from .annotate import draw_regions, shrink_image
 from .cards import make_comparison_card
 from .checks import check_all_links
+from .labels import ENGLISH_LABELS, cached_labels, get_labels
+from .languages import LANGUAGE_NAMES
 from .sam_refine import refine_with_sam
 from .voice import transcribe_file
 
@@ -74,18 +76,40 @@ from .timing import Timings
 def _analyze_message(text: str, language: str, timings: Timings | None = None) -> dict:
     t = timings or Timings()
     link_checks = check_all_links(text)  # always runs locally, never fails
-    try:
-        with t.step("Agent checks", "Muse Spark"):
-            result = run_agent(text, AgentContext(has_guardians=False), language)
-    except Exception:
-        log.exception("Agent call failed; returning safe fallback")
+    result = None
+    if getattr(config, "FAST_MODE", True):
+        try:
+            with t.step("Quick check", "Muse Spark"):
+                result = run_agent_fast(text, AgentContext(has_guardians=False), language)
+            result.setdefault("trace", [])
+            result.setdefault("sources", [])
+        except Exception:
+            log.exception("Fast check failed; trying full agent")
+    if result is None or result.get("fallback"):
+        try:
+            with t.step("Agent checks", "Muse Spark"):
+                result = run_agent(text, AgentContext(has_guardians=False), language)
+        except Exception:
+            log.exception("Agent call failed; trying the single-call check")
+    if result is None or result.get("fallback"):
+        # one more try, with a single model call, so the answer is still in the chosen language
+        try:
+            with t.step("Quick check", "Muse Spark"):
+                result = run_agent_fast(text, AgentContext(has_guardians=False), language)
+            result.setdefault("trace", [])
+            result.setdefault("sources", [])
+        except Exception:
+            log.exception("Quick check failed; returning safe fallback")
+            result = None
+    if result is None or result.get("fallback"):
+        labels = cached_labels(language) or ENGLISH_LABELS
         result = {
             "risk": "medium",
             "scam_type": "unclear",
-            "verdict": "I could not finish the check. Please do not click, pay, or share codes. Ask someone you trust.",
+            "verdict": labels["safe_fallback"],
             "reasons": [],
             "red_flags": [],
-            "next_step": "Ask a family member or call your bank using the number on your card.",
+            "next_step": "Ask a family member or call your bank using the number on your card." if language == "English" else "",
             "confidence": 0.0,
             "actions": [],
             "trace": [],
@@ -94,6 +118,14 @@ def _analyze_message(text: str, language: str, timings: Timings | None = None) -
     result["link_checks"] = link_checks
     result.update(t.summary())
     return result
+
+
+@app.get("/api/labels")
+async def api_labels(language: str = "English"):
+    """Headings and the safe fallback sentence in one language (translated once, then cached)."""
+    if language not in LANGUAGE_NAMES:
+        raise HTTPException(400, "Unknown language.")
+    return {"language": language, "labels": await asyncio.to_thread(get_labels, language)}
 
 
 @app.get("/health")
@@ -217,6 +249,44 @@ async def generate_comparison_card(body: ComparisonCardIn):
     except Exception as e:
         log.exception("Comparison card generation failed")
         raise HTTPException(502, "Comparison card generation is unavailable. Please try again.") from e
+
+
+@app.post("/api/screenshot_card")
+async def screenshot_card(
+    file: UploadFile = File(...),
+    scam_type: str = Form("Suspicious Scam"),
+    red_flags: str = Form("[]"),
+):
+    """Comparison card for an uploaded screenshot: a genuine version of THAT screenshot next to the scam one."""
+    try:
+        data = await file.read(MAX_UPLOAD_BYTES + 1)
+        _read_upload(data)
+        mime = _validate_image(data, file.content_type or "image/png")
+        small_data, small_mime = shrink_image(data)
+        try:
+            flags = [str(f)[:200] for f in json.loads(red_flags)][:4]
+        except (ValueError, TypeError):
+            flags = []
+        scam_type = scam_type[:120]
+        t = Timings()
+        with t.step("Genuine version of your screenshot", "Muse Image"):
+            card_bytes = await asyncio.to_thread(make_comparison_card, scam_type, flags, (small_data, small_mime))
+        if not card_bytes:
+            raise HTTPException(502, "Could not generate comparison card illustration.")
+        res = {
+            "card": f"data:image/png;base64,{base64.b64encode(card_bytes).decode('utf-8')}",
+            "scam_type": scam_type,
+            "red_flags": flags,
+        }
+        res.update(t.summary())
+        return res
+    except HTTPException:
+        raise
+    except Exception as e:
+        log.exception("Screenshot comparison card failed")
+        raise HTTPException(502, "Comparison card generation is unavailable. Please try again.") from e
+    finally:
+        await file.close()
 
 
 @app.get("/api/metrics")

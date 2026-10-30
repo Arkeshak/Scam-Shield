@@ -7,7 +7,7 @@ from PIL import Image
 
 import app.main as m
 
-m.run_agent = lambda case, ctx, lang="English": {
+m.run_agent_fast = m.run_agent = lambda case, ctx, lang="English": {
     "risk": "high", "scam_type": "bank_phishing", "verdict": "Likely scam.", "reasons": ["fake link"],
     "red_flags": ["xyz link"], "next_step": "Ignore it.", "confidence": 0.9, "actions": ["Checked 1 link(s)"],
     "trace": [{"tool": "check_links", "args": '{"links": ["http://xyz"]}', "result": '{"suspicious": true}'}],
@@ -94,5 +94,52 @@ m.transcribe_file = lambda path, language: (_ for _ in ()).throw(ValueError("Voi
 r = c.post("/analyze/voice", files={"file": ("note.ogg", b"sample audio", "audio/ogg")}, data={"language": "Sinhala"})
 assert r.status_code == 400 and "Sinhala" in r.json()["detail"]
 m.transcribe_file = original_transcribe
+
+# /api/screenshot_card passes the uploaded screenshot to the card maker
+_seen = {}
+def _fake_card(scam_type, red_flags, screenshot=None):
+    _seen.update(scam_type=scam_type, red_flags=red_flags, screenshot=screenshot)
+    return b"fake-png-bytes"
+m.make_comparison_card = _fake_card
+_buf = io.BytesIO()
+Image.new("RGB", (40, 30), "white").save(_buf, format="PNG")
+r = c.post("/api/screenshot_card", files={"file": ("a.png", _buf.getvalue(), "image/png")},
+           data={"scam_type": "fake bank SMS", "red_flags": '["Asks for OTP", "Urgent"]'})
+assert r.status_code == 200 and r.json()["card"].startswith("data:image/png;base64,")
+assert _seen["scam_type"] == "fake bank SMS" and _seen["red_flags"] == ["Asks for OTP", "Urgent"]
+assert _seen["screenshot"] and _seen["screenshot"][1].startswith("image/")
+r = c.post("/api/screenshot_card", files={"file": ("a.png", _buf.getvalue(), "image/png")}, data={"red_flags": "not json"})
+assert r.status_code == 200 and _seen["red_flags"] == []
+assert c.post("/api/screenshot_card", files={"file": ("bad.png", b"not an image", "image/png")}).status_code == 400
+
+# Chosen language is kept when the agent fails: one more try with the single-call check, then a safe fallback
+from app import labels as _labels
+_ok = {"risk": "high", "scam_type": "x", "verdict": "HINDI-ANSWER", "reasons": ["r"], "red_flags": [], "next_step": "n", "confidence": 0.9, "actions": []}
+_seen = []
+def _agent_down(case, ctx, lang="English"):
+    raise RuntimeError("timeout")
+m.run_agent = _agent_down
+m.run_agent_fast = lambda case, ctx, lang="English": _seen.append(lang) or dict(_ok)
+r = c.post("/analyze/text", json={"text": "Send your OTP now", "language": "Hindi"})
+assert r.status_code == 200 and r.json()["verdict"] == "HINDI-ANSWER" and _seen == ["Hindi"]
+assert r.json()["trace"] == [] and r.json()["sources"] == []
+# the agent returns its own fallback marker: also retried
+m.run_agent = lambda case, ctx, lang="English": {"risk": "medium", "scam_type": "unclear", "verdict": "English fallback", "confidence": 0.0, "fallback": True}
+r = c.post("/analyze/text", json={"text": "Send your OTP now", "language": "Hindi"})
+assert r.json()["verdict"] == "HINDI-ANSWER"
+# both fail: the translated safe sentence when it is cached, else the English one
+def _fast_down(case, ctx, lang="English"):
+    raise RuntimeError("down")
+m.run_agent_fast = _fast_down
+_labels._cache["Hindi"] = dict(_labels.ENGLISH_LABELS, safe_fallback="HINDI-SAFE")
+assert c.post("/analyze/text", json={"text": "Send your OTP now", "language": "Hindi"}).json()["verdict"] == "HINDI-SAFE"
+assert c.post("/analyze/text", json={"text": "Send your OTP now", "language": "Tamil"}).json()["verdict"] == _labels.ENGLISH_LABELS["safe_fallback"]
+# labels route: known languages only
+_labels._cache["Tamil"] = dict(_labels.ENGLISH_LABELS, why="TAMIL-WHY")
+r = c.get("/api/labels", params={"language": "Tamil"})
+assert r.status_code == 200 and r.json()["labels"]["why"] == "TAMIL-WHY"
+assert c.get("/api/labels", params={"language": "Klingon"}).status_code == 400
+assert c.get("/api/labels").json()["labels"]["why"] == "Why"
+_labels._cache.clear(); _labels._cache["English"] = dict(_labels.ENGLISH_LABELS)
 
 print("All API route tests passed.")
