@@ -13,8 +13,9 @@ All code in this repo was written during the hackathon (Oct 26 – Nov 4, 2026).
 - **Message Analysis:** Muse Spark returns schema-constrained scam analysis with grounded explanations.
 - **Tool-Using Agent:** Checks links locally for lookalikes/shorteners, consults a scam playbook, and uses grounded web search with source links.
 - **Screenshot Segmentation:** SAM 3.1 refines and segments suspicious interface elements (e.g. deceptive buttons or fake logos) with pixel-level bounding boxes.
+- **Languages:** Text and screenshot answers can be requested in 74 languages (answer quality is not tested for each language). Voice notes and calls work in the 25 languages supported by Muse Voice Transcribe. Live-call banners are translated into 5 languages and need native-speaker review. The answer headings (Risk, Why, Red flags, What to do) and the safe fallback sentence are translated by Muse Spark for the chosen language, one small call per language, and have not been reviewed by native speakers.
 - **Voice Notes & Audio Diarization:** Muse Voice Transcribe transcribes supported-language voice notes and diarizes calls. **Sinhala voice transcription is not supported.**
-- **Family Guardian Alerts:** When linked via expiring Telegram invite codes or web codes, guardians receive real-time alerts. Model results do not replace checking official channels.
+- **Family Guardian Alerts:** When linked via expiring Telegram invite codes, guardians receive real-time alerts. Model results do not replace checking official channels.
 
 ## Meta models and tools
 
@@ -24,10 +25,10 @@ All code in this repo was written during the hackathon (Oct 26 – Nov 4, 2026).
 | Muse Spark (`muse-spark-1.3`) | Scam explanation, screenshot/call analysis, reasoning, tool-using agent, call guard evaluation | [app/llm.py](app/llm.py), [app/agent.py](app/agent.py), [app/guard.py](app/guard.py) |
 | SAM 3.1 (`sam-3.1`) | Segment/refine suspicious screenshot boxes | [app/sam_refine.py](app/sam_refine.py) |
 | Muse Voice Transcribe (`muse-voice-transcribe-1.0`) | Voice note transcription and call diarization | [app/voice.py](app/voice.py), [app/call.py](app/call.py) |
-| Muse Image (`muse-image-1.0`) | Real-vs-Scam educational comparison card (sent to the elder after a high-risk result; also available via web UI and `/api/comparison_card`) | [app/cards.py](app/cards.py) |
+| Muse Image (`muse-image-1.0`) | Real-vs-Scam educational comparison card, made only when the user taps a button (web page and Telegram; `/api/comparison_card`). For an uploaded screenshot, Muse Image edits that screenshot into a genuine-looking version and the card shows it next to the original (`/api/screenshot_card`); the genuine version is AI-drawn with made-up details | [app/cards.py](app/cards.py) |
 | `web_search` (Responses API) | Current web checks and source citations when useful | [app/agent.py](app/agent.py) |
 | Local link checks & rules | Shorteners, lookalike domains, microsecond call pressure regex | [app/checks.py](app/checks.py), [app/guard_rules.py](app/guard_rules.py) |
-| Telegram Bot API | Guardian link, alert delivery, quotas, status, web codes | [app/bot.py](app/bot.py), [app/notify.py](app/notify.py), [app/store.py](app/store.py) |
+| Telegram Bot API | Guardian link, alert delivery, quotas, status | [app/bot.py](app/bot.py), [app/notify.py](app/notify.py), [app/store.py](app/store.py) |
 
 
 ## Run locally
@@ -53,8 +54,7 @@ from the phone. Do not expose a development server directly to the internet.
 
 Optional Telegram setup: add `TELEGRAM_BOT_TOKEN` and the public
 `TELEGRAM_BOT_USERNAME` to `.env`, then run `python -m app.bot`. The public web
-page only shows the family panel when a bot username is configured. See the
-[manual Telegram test checklist](docs/TELEGRAM_TEST.md).
+page only shows the family panel when a bot username is configured. 
 
 ## Synthetic evaluation
 
@@ -84,6 +84,8 @@ small fixed synthetic sample. The optional Baseten comparison uses
   request completes.
 - Telegram SQLite stores family links, chosen languages, risk counts, and
   short-lived hourly-quota timestamps; it does not store message content.
+- After a medium or high risk screenshot, the Telegram bot keeps that screenshot in memory only (not on disk, not logged) for up to 30 minutes, so the
+  "Show me a genuine version" button can use it. It is dropped when used or expired.
 - Telegram users are limited to 20 checks per hour, and web/bot media is limited
   to 32 MB. Browser screenshots are resized to at most 1600 px on their longest
   edge before upload.
@@ -116,7 +118,7 @@ small fixed synthetic sample. The optional Baseten comparison uses
 | First text-evaluation attempt | 66/66 of attempted cases correct; 66/105 coverage (62.9%) because of 39 transient API connection errors. |
 | After retry handling | 105/105 correct and evaluated; same classifier/prompt, with transient connection retries. This improves coverage, not measured accuracy. |
 | SAM 3.1 screenshot box test (`tools/evaluate_screenshots.py`, `data/eval_screenshots.json`) | SAM 3.1 alone, given the correct concept word: a SAM box overlapped the expected box (IoU ≥ 0.30) for 16 of 22 expected boxes on 22 procedurally generated scam screens; 0 false boxes on 3 safe screens. This does not score Muse Spark's own boxes or the full Muse Spark + SAM pipeline. |
-| SAM 3.1 on the flat `data/demo_screenshot.png` | 0 boxes returned in 4 runs (see `docs/SPEED_RESULTS.md`). SAM marking works best on screens with clear buttons and logos; on plain text it may return nothing, and the app then shows Muse Spark's rough box. |
+| SAM 3.1 on the flat `data/demo_screenshot.png` | 0 boxes returned in 4 runs (see `evaluation scripts`). SAM marking works best on screens with clear buttons and logos; on plain text it may return nothing, and the app then shows Muse Spark's rough box. |
 | Baseten Muse Spark Open | Not run because `BASETEN_API_KEY` is not configured; see `data/open_model_eval_results.json` if produced. |
 
 These invented examples are intentionally clear and are not an independent,
@@ -136,7 +138,7 @@ To ensure rapid response times for elders on messaging platforms, the architectu
 - **Telegram Bot (Fast Mode, `BOT_FAST_MODE=1`)**: Optimized for low roundtrip latency. Local heuristic link checks run first (instant), findings are passed into exactly **one** `muse-spark-1.3` model call, and the family alert rule runs in deterministic code. Photos are resized/shrunk before upload, SAM 3.1 segmentation calls run in parallel via a thread pool, and text warnings are dispatched to guardians immediately before background card generation.
 - **Web Demo (`/analyze/*`)**: Retains the full multi-turn tool-calling agent loop where `muse-spark-1.3` autonomously selects tools (`check_links`, `scam_playbook`, `alert_trusted_person`, `web_search`) and inspects tool results, allowing judges to observe the full agentic loop.
 
-Measured on the real Meta API with `tools/time_pipeline.py` (full tables in [docs/SPEED_RESULTS.md](docs/SPEED_RESULTS.md)). These are two separate runs and are not mixed:
+Measured on the real Meta API with `tools/time_pipeline.py`. These are two separate runs and are not mixed:
 
 | Stage | Run 1 (SPEED_RESULTS table 1) | Run 2 (2026-10-28 re-measurement) |
 |---|---|---|
@@ -151,7 +153,7 @@ Latency varies a lot between runs, so treat these as examples from one machine, 
 
 ## How this was built
 
-I designed, directed, tested and verified this project myself during the hackathon (Oct 26 to Nov 4, 2026). I used AI coding assistants, Claude Code (Anthropic) and GitHub Copilot, to help write and review code. The numbers in this README come from scripts and result files in this repo (`evaluate.py`, `tools/`, `data/*.json`, `docs/SPEED_RESULTS.md`), and all test data and audio are synthetic.
+I designed, directed, tested and verified this project myself during the hackathon (Oct 26 to Nov 4, 2026). I used AI coding assistants, Claude Code (Anthropic) and GitHub Copilot, to help write and review code. The numbers in this README come from scripts and result files in this repo (`evaluate.py`, `tools/`, `data/*.json`, `evaluation scripts`), and all test data and audio are synthetic.
 
 
 ## Screenshots
@@ -174,16 +176,8 @@ Captured from the running app with synthetic example content only.
 | ![Tablet View](docs/screenshots/tablet_768.png) | ![Mobile View](docs/screenshots/mobile_375.png) |
 
 
-## Project documentation
+## License
 
-- [Architecture](docs/ARCHITECTURE.md)
-- [Speed Optimization Results & Benchmarks](docs/SPEED_RESULTS.md)
-- [Live Call Guard Realtime Latency Evaluation](docs/CALL_GUARD_RESULTS.md)
-- [Manual Browser & Judge Verification Checklist](docs/MANUAL_BROWSER_CHECKLIST.md)
-- [Three-minute demo script](docs/DEMO_SCRIPT.md)
-- [Submission details and checklist](docs/SUBMISSION.md)
-- [X post drafts](docs/X_POST.md)
-- [Telegram manual test checklist](docs/TELEGRAM_TEST.md)
-- [MIT License](LICENSE)
+This project is licensed under the [MIT License](LICENSE).
 
 
